@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEGO Model Scale Converter</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap">
+</head>
+  <body>
+    <div class="header">
+      <!-- default settinds -->
+      <div class="input-field">
+        <select name="defaulUnitsIn" id="defaultUnitsIn">
+          <option value="inches">Inches</option>
+          <option value="feet">Feet</option>
+          <option value="miles">Miles</option>
+          <option value="millimeters">Millimeters</option>
+          <option value="centimeters">Centimeters</option>
+          <option value="meters">Meters</option>
+          <option value="kilometers">Kilometers</option>
+          <option value="studs">Studs</option>
+          <option value="stackedBricks">Stacked Bricks</option>
+          <option value="stackedPlates">Stacked Plates</option>
+        </select>
+        <label for="defaultUnitsIn">Units In</label>
+      </div>
+      <div class="input-field">
+        <select name="defaultUnitsPrimaryOut" id="defaultUnitsPrimaryOut">
+        <option value="inches">Inches</option>
+        <option value="feet">Feet</option>
+        <option value="miles">Miles</option>
+        <option value="millimeters">Millimeters</option>
+        <option value="centimeters">Centimeters</option>
+        <option value="meters">Meters</option>
+        <option value="kilometers">Kilometers</option>
+        <option value="studs">Studs</option>
+        <option value="stackedBricks">Stacked Bricks</option>
+        <option value="stackedPlates">Stacked Plates</option>
+      </select>
+        <label for="defaultUnitsPrimaryOut">Primary Units Out</label>
+      </div>
+      <div class="input-field">
+        <select name="defaultUnitsSecondaryOut" id="defaultUnitsSecondaryOut">
+        <option value="inches">Inches</option>
+        <option value="feet">Feet</option>
+        <option value="miles">Miles</option>
+        <option value="millimeters">Millimeters</option>
+        <option value="centimeters">Centimeters</option>
+        <option value="meters">Meters</option>
+        <option value="kilometers">Kilometers</option>
+        <option value="studs">Studs</option>
+        <option value="stackedBricks">Stacked Bricks</option>
+        <option value="stackedPlates">Stacked Plates</option>
+      </select>
+        <label for="defaultUnitsSecondaryOut">Secondary Units Out</label>
+      </div>
+
+      <!-- Decimal places -->
+      <div class="input-field">
+        <input type="number" id="decimalPlaces" name="decimalPlaces" value=2 required>
+        <label for="decimalPlaces">Decimal Places</label>
+      </div>
+      <!-- Scaling factor -->
+      <div class="input-field">
+        <input type="number" id="scalingFactor" name="scalingFactor" value=1 required>
+        <label for="decimalPlaces">Scaling Factor</label>
+      </div>
+
+      <!-- Scaling operation -->
+      <div class="input-field">
+        <select name="scalingOperation" id="scalingOperation">
+            <option value="divide">Divide</option>
+            <option value="multiply">Multiply</option>
+        </select>
+        <label for="scalingOperation">Scaling Operationr</label>
+        
+      </div>
+    </div>
+    <div id="containerWrapper">
+      <div class="container">
+      <div class="content">
+        <div class="unit-buttons">
+          <!-- Buttons for selecting units system -->
+          <div id="unitSystemButtons">
+            <button id="imperialButton" type="button">Imperial</button>
+            <button id="metricButton" type="button">Metric</button>
+            <button id="legoButton" type="button">LEGO</button>
+          </div>
+
+          <!-- Container for unit buttons -->
+          <div class="unitsIn" id="unitButtonsContainer"></div>
+
+          <!-- Value input -->
+            <input type="number" id="inputValue" name="inputValue" placeholder="Enter value in Inches" required>
+        </div>
+
+        <div class="conversion">
+            <!-- Output units selection -->
+            <select class="unitsOutPrimary" name="unitsOutput1" id="unitsOutput1">
+              <option value="studs">Studs</option>
+              <option value="stackedBricks">Stacked Bricks</option>
+              <option value="stackedPlates">Stacked Plates</option>
+              <option value="inches">Inches</option>
+              <option value="feet">Feet</option>
+              <option value="miles">Miles</option>
+              <option value="millimeters">Millimeters</option>
+              <option value="centimeters">Centimeters</option>
+              <option value="meters">Meters</option>
+              <option value="kilometers">Kilometers</option>
+            </select>
+
+            <!-- Converted units1 -->
+            <input class="outPrimary" type="text" id="conversion1" name="conversion1" readonly>
+
+            <br>
+
+            <!-- Secondary units for fraction of main unit -->
+            <select class="unitsOutSecondary" name="unitsOutput2" id="unitsOutput2">
+              <option value="stackedPlates">Stacked Plates</option>
+              <option value="stackedBricks">Stacked Bricks</option>
+              <option value="studs">Studs</option>
+              <option value="inches">Inches</option>
+              <option value="feet">Feet</option>
+              <option value="miles">Miles</option>
+              <option value="millimeters">Millimeters</option>
+              <option value="centimeters">Centimeters</option>
+              <option value="meters">Meters</option>
+              <option value="kilometers">Kilometers</option>
+            </select>
+
+            <!-- Converted units2 -->
+            <input class="outSecondary" type="text" id="conversion2" name="conversion2" readonly>
+
+          </div>
+      </div>
+    </div>
+    </div>
+
+    <br>
+    <!-- Button to duplicate container -->
+    <button id="newConverter">+</button>
+    
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
