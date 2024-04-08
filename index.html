@@ -78,25 +78,27 @@
         
       </div>
     </div>
-    <div id="containerWrapper">
+    
+    <div class="containerWrapper" id="containerWrapper">
       <div class="container">
-      <div class="content">
-        <div class="unit-buttons">
-          <!-- Buttons for selecting units system -->
-          <div id="unitSystemButtons">
-            <button id="imperialButton" type="button">Imperial</button>
-            <button id="metricButton" type="button">Metric</button>
-            <button id="legoButton" type="button">LEGO</button>
+        <div class="content">
+          <div class="unit-buttons">
+            <!-- Buttons for selecting units system -->
+            <div id="unitSystemButtons">
+              <button id="imperialButton" type="button">Imperial</button>
+              <button id="metricButton" type="button">Metric</button>
+              <button id="legoButton" type="button">LEGO</button>
+            </div>
+  
+            <!-- Container for unit buttons -->
+            <div class="unitsIn" id="unitButtonsContainer"></div>
+  
+            <!-- Value input -->
+              <input type="number" id="inputValue" name="inputValue" placeholder="Enter value in Inches" required>
           </div>
-
-          <!-- Container for unit buttons -->
-          <div class="unitsIn" id="unitButtonsContainer"></div>
-
-          <!-- Value input -->
-            <input type="number" id="inputValue" name="inputValue" placeholder="Enter value in Inches" required>
         </div>
-
-        <div class="conversion">
+        <div class="content">
+          <div class="conversion">
             <!-- Output units selection -->
             <select class="unitsOutPrimary" name="unitsOutput1" id="unitsOutput1">
               <option value="studs">Studs</option>
@@ -134,8 +136,8 @@
             <input class="outSecondary" type="text" id="conversion2" name="conversion2" readonly>
 
           </div>
+        </div>
       </div>
-    </div>
     </div>
 
     <br>
