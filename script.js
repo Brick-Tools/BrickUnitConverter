@@ -261,7 +261,7 @@ function parseURLParams() {
   document.getElementById('defaultUnitsSecondaryOut').value = urlParams.get('defaultUnitsSecondaryOut') || 'stackedPlates';
   document.getElementById('decimalPlaces').value = urlParams.get('decimalPlaces') || '2';
   document.getElementById('scalingFactor').value = urlParams.get('scalingFactor') || '1';
-  document.getElementById('scalingOperation').value = urlParams.get('scalingOperation') || 'multiply';
+  document.getElementById('scalingOperation').value = urlParams.get('scalingOperation') || 'divide';
 }
 
 // Add event listeners for input change events
