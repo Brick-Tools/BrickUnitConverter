@@ -12,6 +12,9 @@
   /* --dropdown-color: #1A1A2E; */
   /* --dropdown-color: #1E2A1A; */
   /* --dropdown-color: #352D21; */
+  /* --dropdown-color: #405a48; */
+  --green-tint: #405a48;
+  --blue-tint: #1E3140;
 }
 
 html {
@@ -25,13 +28,14 @@ html {
 
 /* General button style */
 button {
-    padding: 8px 12px;
-    margin: 4px;
-    border: none;
-    border-radius: 4px;
-    background-color: var(--button-color);
-    color: var(--font-color);
-    cursor: pointer;
+  padding: 8px 12px;
+  margin: 4px;
+  /* border: none; */
+  border-radius: 4px;
+  background-color: var(--blue-tint);
+  color: var(--font-color);
+  cursor: pointer;
+  border: 1px solid var(--background-color);
 }
 
 /* Hover effect */
@@ -41,7 +45,8 @@ button:hover {
 
 /* Special styling for the selected unit and system */
 button.active {
-    background-color: var(--active-button-color);
+  /* background-color: var(--green-tint); */
+  border: 1px solid var(--button-color);
 }
 
 /* Placeholder styling */
@@ -59,11 +64,7 @@ button.active {
     margin-bottom: 10px;
 }
 
-.container {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two columns layout */
-    gap: 20px; /* Gap between columns */
-}
+
 
 .unit-buttons {
     /* Align buttons and unit container in a column */
@@ -124,15 +125,26 @@ input[type="text"]:focus {
 
 /* Style for header */
 .header {
-    width: 40%; /* Take up 40% of the container width */
-    margin: 0 auto; /* Center the header horizontally */
-    padding: 20px; /* Add padding */
-    box-sizing: border-box; /* Include padding in the width calculation */
-    display: flex; /* Use flexbox for layout */
-    align-items: center; /* Align items vertically */
-    justify-content: space-between; /* Space items evenly */
-    border-bottom: 1px solid var(--outline-color); /* Add border at the bottom */
+  width: 40%; /* Take up 40% of the container width */
+  margin: 0 auto; /* Center the header horizontally */
+  padding: 20px; /* Add padding */
+  box-sizing: border-box; /* Include padding in the width calculation */
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Align items vertically */
+  justify-content: space-between; /* Space items evenly */
+  border-bottom: 1px solid var(--outline-color); /* Add border at the bottom */
 }
+@media screen and (max-width: 1500px) {
+    .header {
+        width: 60%;
+    }
+}
+@media screen and (max-width: 600px) {
+    .header {
+        width: 90%;
+    }
+}
+
 
 /* Style for dropdowns and input fields */
 .header select,
@@ -159,7 +171,7 @@ input[type="text"]:focus {
 .input-field label {
   position: absolute;
   top: 10px;
-  left: 10px;
+  left: 6px;
   color: var(--label-color);
   transition: top 0.3s ease, font-size 0.3s ease;
 }
@@ -171,54 +183,31 @@ input[type="text"]:focus {
 }
 
 
-
-
-/* Style for container (holds everything) */
+/* Style for main columns */
+.containerWrapper {
+  padding: 5px;
+  max-width: 900px;
+  width: 95%;
+  margin: 20px auto;
+  /* border: 3px solid red; */
+}
 .container {
-    display: flex;
-    justify-content: center; /* Center the container horizontally */
-    align-items: flex-start; /* Align the container to the top of the page */
-    width: 33%; /* Take up 60% of the viewport width */
-    margin: 0 auto; /* Center the container horizontally */
-    padding-top: 20px; /* Add some top padding for spacing */
-    box-sizing: border-box; /* Include padding in the width calculation */
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: 5px 0;
+  border-bottom: 1px solid var(--outline-color); /* Add border at the bottom */
+  /* border: 2px solid green; */
 }
-
-/* Style for content */
 .content {
-    display: flex; /* Use flexbox for content */
-    gap: 64px; /* Gap between columns */
-    padding: 20px; /* Add padding to the content */
-    box-sizing: border-box; /* Include padding in the width calculation */
+  flex: 1;
+  margin: 2px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-top: 6px;
+  padding-bottom: 10px;
+  /* border: 1px solid blue; */
 }
-
-/* Style for unit-buttons column */
-.unit-buttons {
-    width: 480px; /* Fixed width for the unit-buttons column */
-    flex: 1; /* Allow the column to grow */
-    padding-right: 20px; /* Add padding to the right */
-    box-sizing: border-box; /* Include padding in the width calculation */
-}
-
-/* Style for conversion column */
-.conversion {
-    width: 300px; /* Fixed width for the conversion column */
-    flex: 1; /* Allow the column to grow */
-    padding-left: 20px; /* Add padding to the left */
-    box-sizing: border-box; /* Include padding in the width calculation */
-}
-
-
-
-
-
-
-
-
-
-
-
-
 
 button[id="newConverter"] {
   border: 1px solid var(--button-color);
