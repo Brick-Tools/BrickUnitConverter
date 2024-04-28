@@ -1,201 +1,271 @@
 // Variables for default settings
 var defaultSystem = "imperial";
-var defaultUnits = "inches";
-var scaler = 1;
+var defaultUnitsIn = "inches";
+var defaultUnitsOutPrimary = "studs";
+var defaultUnitsOutSecondary = "stackedPlates";
+var defaultDecimialPlaces = 2;
+var defaultScalingFactor = 1;
+var defaultScalingOperation = "divide";
 
-// Define a global variable to store the active unit
-var activeUnit = defaultUnits;
+// Define a global variables
+var isFirstCall = true;
+var activeUnit = defaultUnitsIn;
+var numConverters = 1;
+
+// function to convert between "code" units and "display" units
+function reformatUnit(unitIn) {
+  var units = {
+    studs: "Studs",
+    stackedBricks: "Stacked Bricks",
+    stackedPlates: "Stacked Plates",
+    inches: "Inches",
+    feet: "Feet",
+    yards: "Yards",
+    miles: "Miles",
+    millimeters: "Millimeters",
+    centimeters: "Centimeters",
+    meters: "Meters",
+    kilometers: "Kilometers",
+    Studs: "studs",
+    "Stacked Bricks": "stackedBricks",
+    "Stacked Plates": "stackedPlates",
+    Inches: "inches",
+    Feet: "feet",
+    Yards: "yards",
+    Miles: "miles",
+    Millimeters: "millimeters",
+    Centimeters: "centimeters",
+    Meters: "meters",
+    Kilometers: "kilometers"
+  };
+  // (unit.charAt(0).toLowerCase() + unit.slice(1)).replace(/ /g,"")
+  return units[unitIn];
+}
 
 // Function to generate unit buttons based on the selected system
-function generateUnitButtons(system) {
-    var unitButtonsContainer = document.getElementById("unitButtonsContainer");
-    unitButtonsContainer.innerHTML = ""; // Clear previous buttons
+function generateUnitButtons(element, system, num) {
+  // alert("element.id: " + element.id + "\n system: " + system + "\n num: " + num);
+  // alert(element.closest('.unit-buttons').innerHTML);
+  const unitButtonsContainer = element.closest('.unit-buttons').children[1];
 
-    var units = [];
-    if (system === "imperial") {
-        units = ["Inches", "Feet", "Miles"];
-    } else if (system === "metric") {
-        units = ["Millimeters", "Centimeters", "Meters", "Kilometers"];
-    } else if (system === "lego") {
-        units = ["Studs", "Stacked Bricks", "Stacked Plates"];
+  unitButtonsContainer.innerHTML = ""; // Clear previous buttons
+
+  var units = [];
+  if (system === "imperial") {
+    units = ["Inches", "Feet", "Miles"];
+  } else if (system === "metric") {
+    units = ["Millimeters", "Centimeters", "Meters", "Kilometers"];
+  } else if (system === "lego") {
+    units = ["Studs", "Stacked Bricks", "Stacked Plates"];
+  }
+
+  var label = document.createElement("label");
+  label.textContent = "Unit";
+  label.setAttribute("class", "section-label" );
+  // label.setAttribute("for", "unitButtonsContainer");
+  unitButtonsContainer.appendChild(label);
+  
+  units.forEach(function(unit) {
+    var button = document.createElement("input");
+    var btnLabel = document.createElement("label");
+    activeUnit = reformatUnit(unit);
+    // alert("unit: " + unit + "\nactiveUnit: " + activeUnit)
+    // button.textContent = unit;
+    button.setAttribute("type", "radio"); // Set button type to prevent form submission
+    button.setAttribute("id", activeUnit + num);
+    button.setAttribute("class", "radioUnitsIn");
+    button.setAttribute("name", "activeUnit" + num);
+    button.setAttribute("value", unit);
+
+
+    if( activeUnit == element.closest('.unit-buttons').querySelector('.inputValue').dataset.activeUnit ) {
+      button.checked = true;
     }
 
-    units.forEach(function(unit) {
-        var button = document.createElement("button");
-        button.textContent = unit;
-        button.setAttribute("type", "button"); // Set button type to prevent form submission
-        button.addEventListener("click", function() {
-            activeUnit = (unit.charAt(0).toLowerCase() + unit.slice(1)).replace(/ /g,"");
-            // var inputValue = document.getElementById("inputValue").value;
-            document.getElementById("inputValue").placeholder = "Dimension in " + this.textContent;
-            convertUnits(); // Perform conversion immediately after setting the input value
+    if( isFirstCall && unit == reformatUnit(defaultUnitsIn) ) {
+      button.setAttribute("checked", "checked");
+      // document.getElementById("inputValue").placeholder = "Dimension in " + unit;
+      // unitButtonsContainer.closest('.unit-buttons').querySelector('.inputValue').placeholder = "Dimension in " + unit; replaced
+      unitButtonsContainer.closest('.unit-buttons').querySelector('.input-label').textContent = "Dimension in " + unit;
+      isFirstCall = false;
+    }
 
-            // Remove 'active' class from all buttons
-            var allButtons = document.querySelectorAll("#unitButtonsContainer button");
-            allButtons.forEach(function(btn) {
-                btn.classList.remove("active");
-            });
-            // Add 'active' class to the clicked button
-            this.classList.add("active");
-        });
-        unitButtonsContainer.appendChild(button);
+    btnLabel.setAttribute("for", activeUnit + num)
+    // btnLabel.setAttribute("class", "label")
+    btnLabel.textContent = unit;
+
+    button.addEventListener("click", function() {
+      // var inputValue = document.getElementById("inputValue").value;
+      // unitButtonsContainer.closest('.unit-buttons').querySelector('.inputValue').placeholder = "Dimension in " + this.value; replaced
+      unitButtonsContainer.closest('.unit-buttons').querySelector('.input-label').textContent = "Dimension in " + this.value;
+      
+      // document.getElementById("inputValue").placeholder = "Dimension in " + this.value;
+      unitConversion(this);
     });
+    // unitButtonsContainer.appendChild(button);
+    // unitButtonsContainer.appendChild(btnLabel);
+    unitButtonsContainer.appendChild(button);
+    unitButtonsContainer.appendChild(btnLabel);
+  });
 }
-// Perform initial generation of unit buttons based on the initial selection
-generateUnitButtons(defaultSystem);
 
-// Event listener for Imperial button
-document.getElementById("imperialButton").addEventListener("click", function() {
-  generateUnitButtons("imperial");
-  
-  this.classList.add("active");
-  document.getElementById("metricButton").classList.remove("active");
-  document.getElementById("legoButton").classList.remove("active");
-});
+function unitConversion(element) {
+  // alert("unitConversion()");
+  const container = element.closest('.container');
+  inputUnitInput   = container.querySelector('.radioUnitsIn:checked')
+  inputValueInput  = container.querySelector('.inputValue')
+  outputUnit1Select = container.querySelector('.unitsOutPrimary')
+  outputValue1Input = container.querySelector('.outPrimary')
+  outputUnit2Select = container.querySelector('.unitsOutSecondary')
+  outputValue2Input = container.querySelector('.outSecondary')
 
-// Event listener for Metric button
-document.getElementById("metricButton").addEventListener("click", function() {
-  generateUnitButtons("metric");
-
-  this.classList.add("active");
-  document.getElementById("imperialButton").classList.remove("active");
-  document.getElementById("legoButton").classList.remove("active");
-});
-
-// Event listener for LEGO button
-document.getElementById("legoButton").addEventListener("click", function() {
-  generateUnitButtons("lego");
-
-  this.classList.add("active");
-  document.getElementById("imperialButton").classList.remove("active");
-  document.getElementById("metricButton").classList.remove("active");
-});
-
-
-
-
-// Function to perform conversion
-function convertUnits() {
-  // Get input value and units
-  var inputValue = parseFloat(document.getElementById("inputValue").value);
-  decimalPlacess = document.getElementById("decimalPlaces").value;
-  if (isNaN(inputValue)) {
-    // If input value is empty or not a number, set conversion results to blank
-    document.getElementById("conversion1").value = (0).toFixed(decimalPlacess);
-    document.getElementById("conversion2").value = (0).toFixed(decimalPlacess);
-    return;
+  // inputUnit = inputUnitInput.id;
+  if( inputUnitInput != null ) {
+    inputUnit = inputUnitInput.id.slice(0, -1);
+    inputValueInput.setAttribute("data-active-unit", inputUnitInput.id.slice(0, -1));
   }
-  var inputValue = parseFloat(document.getElementById("inputValue").value);
-  var inputUnits = activeUnit;
+  else {
+    inputUnit = inputValueInput.dataset.activeUnit;
+  }
 
-  // Get output units
-  var outputUnits1 = document.getElementById("unitsOutput1").value;
-  var outputUnits2 = document.getElementById("unitsOutput2").value;
-  var scaler       = document.getElementById("scalingFactor").value;
-  if (document.getElementById("scalingOperation").value == "divide") {
+  inputValue = inputValueInput.value;
+  outputUnit1 = outputUnit1Select.value;
+  outputUnit2 = outputUnit2Select.value;
+
+  outputValue1 = outputValue1Input.value;
+  outputValue2 = outputValue2Input.value;
+
+  decimalPlacess = document.getElementById("defaultDecimialPlaces").value;
+  scaler         = document.getElementById("defaultScalingFactor").value;
+  if (document.getElementById("defaultScalingOperation").value == "divide") {
     scaler = 1 / scaler;
   }
+  // alert(inputUnit + " " + inputValue + " " + outputUnit1 + " " + outputValue1 + " " + outputUnit2 + " " + outputValue2)
 
-  // Define conversion factors
   var conversionFactors = {
-    studs: 8,
-    stackedBricks: 9.6,
-    stackedPlates: 3.2,
-    inches: 25.4,
-    feet: 304.8,
-    miles: 1609344,
-    millimeters: 1,
-    centimeters: 10,
-    meters: 1000,
-    kilometers: 1000000
+    studs: 0.008,
+    stackedBricks: 0.0096,
+    stackedPlates: 0.0032,
+    inches: 0.0254,
+    feet: 0.3048,
+    yards: 0.9144,
+    miles: 1609.344,
+    millimeters: 0.001,
+    centimeters: .01,
+    meters: 1,
+    kilometers: 1000
   };
 
-  // Perform conversion
-  var conversion1 = scaler * inputValue * conversionFactors[inputUnits] / conversionFactors[outputUnits1];
-  var conversion2 = (conversion1-Math.trunc(conversion1)) * conversionFactors[outputUnits1] / conversionFactors[outputUnits2];
-    // alert("1: " + conversion1 + "\n" + "2: " + conversion2);
-
-    // Update conversion fields
-    document.getElementById("conversion1").value = conversion1.toFixed(decimalPlacess);
-    document.getElementById("conversion2").value = conversion2.toFixed(decimalPlacess);
-}
-
-function convert(valueIn, unitsIn, unitsOut) {
-  // Define conversion factors
-  var conversionFactors = {
-    studs: 8,
-    stackedBricks: 9.6,
-    stackedPlates: 3.2,
-    inches: 25.4,
-    feet: 304.8,
-    miles: 1609344,
-    millimeters: 1,
-    centimeters: 10,
-    meters: 1000,
-    kilometers: 1000000
+  var conversionUnit = {
+    studs:" s",
+    stackedBricks:"sb",
+    stackedPlates:"sp",
+    inches: "in",
+    feet: "ft",
+    yards: "yd",
+    miles: "mi",
+    millimeters: "mm",
+    centimeters: "cm",
+    meters: " m",
+    kilometers: "km"
   };
 
-  valueOut = scaler * valueIn * conversionFactors[unitsIn] / conversionFactors[unitsOut];
-  return valueOut;
+  outputValue1 = scaler * inputValue * conversionFactors[inputUnit] / conversionFactors[outputUnit1];
+  outputValue2 = scaler * (outputValue1-Math.trunc(outputValue1)) * conversionFactors[outputUnit1] / conversionFactors[outputUnit2];
+
+  outputValue1 = outputValue1.toFixed(decimalPlacess);
+  outputValue2 = outputValue2.toFixed(decimalPlacess);
+
+  outputValue1Input.value = outputValue1 + " " + conversionUnit[outputUnit1];
+  outputValue2Input.value = outputValue2 + " " + conversionUnit[outputUnit2];
+  // alert(outputValue1 + " " + outputValue2)
 }
 
-// Add event listeners to trigger conversion whenever input changes
-document.getElementById("inputValue"      ).addEventListener("input",  convertUnits);
-document.getElementById("unitsOutput1"    ).addEventListener("change", convertUnits);
-document.getElementById("unitsOutput2"    ).addEventListener("change", convertUnits);
-document.getElementById("decimalPlaces"   ).addEventListener("input",  convertUnits);
-document.getElementById("scalingFactor"   ).addEventListener("input",  convertUnits);
-document.getElementById("scalingOperation").addEventListener("change", convertUnits);
+function updateAllConversions() {
+  // alert("updateAllConversions()");
+  // Select all input elements with class "inputValue"
+  var inputElements = document.querySelectorAll('.inputValue');
 
-// Perform initial conversion when the page loads
-convertUnits();
+  // Iterate over each input element
+  inputElements.forEach(function(inputElement) {
+    // Call unitConversion() for each input element
+    unitConversion(inputElement);
+  });
 
-
-
-
-
-
+}
 
 // Function to duplicate the main container
 function duplicateContainer() {
+  numConverters++;
+  // alert(numConverters)
   const containerWrapper = document.getElementById('containerWrapper');
   const lastContainer = containerWrapper.lastElementChild;
 
   // Clone the last container
   const duplicate = lastContainer.cloneNode(true);
 
-  // Append the clone to the container wrapper
-  containerWrapper.appendChild(duplicate);
 
+  // i = 0;
   // Add event listeners for input fields in the duplicated container
-  duplicate.querySelectorAll('select, input[type="number"]').forEach(input => {
-      input.addEventListener('change', function() {
-        // Get the container of the changed input field
-        const container = this.closest('.container');
+  duplicate.querySelectorAll('select, input, label').forEach(input => {
+    // alert(i + ", " + input.id)
+    // i = i + 1;
 
-        // Get the input value from the changed input field
-        const inputValue = parseFloat(this.value);
-        const unitsIn = container.querySelector('.unitsIn').value;
-        const unitsOutPrimary = container.querySelector('.unitsOutPrimary').value;
-        const unitsOutSecondary = container.querySelector('.unitsOutSecondary').value;
-        alert(unitsIn)
+    if( input.name != null ) {
+      // alert("!" + input.name + ", " + input.id)
+      input.setAttribute("name", input.name.slice(0,-1) + numConverters);
+      // alert("done")
+      // n = input
+    }
 
-        // Perform the conversion within the container
-        value1 = convert(inputValue, unitsIn, unitsOutPrimary);
-        value2 = convert((value1-Math.trunc(value1)), unitsOutPrimary, unitsOutSecondary);
-        const conversion1 = inputValue * 2.54; // Example conversion: inches to centimeters
-        const conversion2 = conversion1 / 10;  // Convert centimeters to millimeters
+    // system buttons
+    if( input.id != null && input.id != "" ) {
+      // alert("!! " + input.id + "\n" + input.id.slice(0,-1) + numConverters)
+      input.setAttribute("id", input.id.slice(0,-1) + numConverters);
+      // alert("done")
+      btn = input
 
-        // Update the output fields within the container
+      if( input.id.includes("imperial") || input.id.includes("metric") || input.id.includes("lego") ) {
+        input.addEventListener("click", function() {
+            generateUnitButtons(this, input.id.slice(0,-1), input.id.slice(-1));
+            // alert("?" + "btn: " + btn.id + ", inputHTML: " + input.htmlFor)
+          });
+        
+        if( input.id.includes(defaultSystem) ) {
+          input.checked = true;
+        }
+        else {
+          input.checked = false;
+        }
+        
+      }
+    }
 
-        // Call the function with your container element
-        // const containerr = document.getElementById('yourContainerId');
-        // logContainerElements(container);
-      
-        container.querySelector('.outPrimary').value = conversion1.toFixed(2);
-        container.querySelector('.outSecondary').value = conversion2.toFixed(2);
-      });
+    // labels
+    if( input.htmlFor != null ) {
+      // alert("!" + input.htmlFor + ", " + typeof(input.htmlFor))
+      input.setAttribute("for", input.htmlFor.slice(0,-1) + numConverters);
+    }    
+
+    input.addEventListener('input', function() {
+      unitConversion(this)
+    } );
   });
+
+
+  // Append the clone to the container wrapper
+  inputField = duplicate.querySelector(".inputValue")
+  
+  inputField.setAttribute("data-active-unit", defaultUnitsIn);
+  // inputField.setAttribute("placeholder", "Dimension in " + reformatUnit(defaultUnitsIn));
+  duplicate.querySelector('.input-label').textContent = "Dimension in " + reformatUnit(defaultUnitsIn);
+  duplicate.querySelector('.unitsOutPrimary').value = defaultUnitsOutPrimary
+  duplicate.querySelector('.unitsOutSecondary').value = defaultUnitsOutSecondary
+  
+  containerWrapper.appendChild(duplicate);
+  generateUnitButtons(inputField, defaultSystem, numConverters);
+  unitConversion(inputField)
+
 
   // Calculate the position of the button
   const button = document.getElementById('newConverter');
@@ -207,61 +277,56 @@ function duplicateContainer() {
 
 
 
-// Add event listener for the duplicate container button
-document.getElementById('newConverter').addEventListener('click', duplicateContainer);
 
 
-
-
+//////// URL DATA \\\\\\\\
 // Function to update URL parameters
 function updateURLParams() {
-    console.log('Input value changed');
-    const inputValue = this.value; // Log the value of the input field
-    console.log('Input value:', inputValue);
-
-    // Your conversion logic
-    // ...
-}
-
-
-
-
-
-
-
-
-
-
-
-// Function to update URL parameters
-function updateURLParams() {
-  const defaultUnitsIn = document.getElementById('defaultUnitsIn').value;
-  const defaultUnitsPrimaryOut = document.getElementById('defaultUnitsPrimaryOut').value;
-  const defaultUnitsSecondaryOut = document.getElementById('defaultUnitsSecondaryOut').value;
-  const decimalPlaces = document.getElementById('decimalPlaces').value;
-  const scalingFactor = document.getElementById('scalingFactor').value;
-  const scalingOperation = document.getElementById('scalingOperation').value;
+  defaultUnitsIn           = document.getElementById('defaultUnitsIn').value;
+  defaultUnitsOutPrimary   = document.getElementById('defaultUnitsOutPrimary').value;
+  defaultUnitsOutSecondary = document.getElementById('defaultUnitsOutSecondary').value;
+  defaultDecimialPlaces    = document.getElementById('defaultDecimialPlaces').value;
+  defaultScalingFactor     = document.getElementById('defaultScalingFactor').value;
+  defaultScalingOperation  = document.getElementById('defaultScalingOperation').value;
 
   const urlParams = new URLSearchParams(window.location.search);
-  urlParams.set('defaultUnitsIn', defaultUnitsIn);
-  urlParams.set('defaultUnitsPrimaryOut', defaultUnitsPrimaryOut);
-  urlParams.set('defaultUnitsSecondaryOut', defaultUnitsSecondaryOut);
-  urlParams.set('decimalPlaces', decimalPlaces);
-  urlParams.set('scalingFactor', scalingFactor);
-  urlParams.set('scalingOperation', scalingOperation);
+  urlParams.set('defaultUnitsIn',           defaultUnitsIn);
+  urlParams.set('defaultUnitsOutPrimary',   defaultUnitsOutPrimary);
+  urlParams.set('defaultUnitsOutSecondary', defaultUnitsOutSecondary);
+  urlParams.set('defaultDecimialPlaces',    defaultDecimialPlaces);
+  urlParams.set('defaultScalingFactor',     defaultScalingFactor);
+  urlParams.set('defaultScalingOperation',  defaultScalingOperation);
 
   history.replaceState(null, '', '?' + urlParams.toString());
+
+  const unitToSystem = {
+    inches: "imperial",
+    feet: "imperial",
+    yards: "imperial",
+    miles: "imperial",
+    millimeters: "metric",
+    centimeters: "metric",
+    meters: "metric",
+    kilometers: "metric",
+    studs: "lego",
+    stackedPlates: "lego",
+    stackedBricks: "lego"
+  };
+
+  // Set defaultSystem based on the selected unit type
+  defaultSystem = unitToSystem[defaultUnitsIn] || "imperial";
 }
 
 // Function to parse URL parameters and set initial values
 function parseURLParams() {
   const urlParams = new URLSearchParams(window.location.search);
   document.getElementById('defaultUnitsIn').value = urlParams.get('defaultUnitsIn') || 'inches';
-  document.getElementById('defaultUnitsPrimaryOut').value = urlParams.get('defaultUnitsPrimaryOut') || 'studs';
-  document.getElementById('defaultUnitsSecondaryOut').value = urlParams.get('defaultUnitsSecondaryOut') || 'stackedPlates';
-  document.getElementById('decimalPlaces').value = urlParams.get('decimalPlaces') || '2';
-  document.getElementById('scalingFactor').value = urlParams.get('scalingFactor') || '1';
-  document.getElementById('scalingOperation').value = urlParams.get('scalingOperation') || 'divide';
+  document.getElementById('defaultUnitsOutPrimary').value = urlParams.get('defaultUnitsOutPrimary') || 'studs';
+  document.getElementById('defaultUnitsOutSecondary').value = urlParams.get('defaultUnitsOutSecondary') || 'stackedPlates';
+  document.getElementById('defaultDecimialPlaces').value = urlParams.get('defaultDecimialPlaces') || '2';
+  document.getElementById('defaultScalingFactor').value = urlParams.get('defaultScalingFactor') || '1';
+  document.getElementById('defaultScalingOperation').value = urlParams.get('defaultScalingOperation') || 'divide';
+  updateURLParams()
 }
 
 // Add event listeners for input change events
@@ -270,4 +335,47 @@ document.querySelectorAll('.header select, .header input[type="number"]').forEac
 });
 
 // Parse URL parameters when the page loads
-window.addEventListener('DOMContentLoaded', parseURLParams);
+window.addEventListener('DOMContentLoaded', function() {
+  parseURLParams()
+  document.getElementById("inputValue").setAttribute("data-active-unit", defaultUnitsIn);
+  // Perform initial generation of unit buttons based on the initial selection
+  generateUnitButtons(document.getElementById(defaultSystem + "1"), defaultSystem, document.getElementById("imperial1").id.slice(-1));
+
+  if( defaultSystem == "imperial" ) { document.getElementById("imperial1").checked = true; }
+  if( defaultSystem == "metric"   ) { document.getElementById("metric1"  ).checked = true; }
+  if( defaultSystem == "lego"     ) { document.getElementById("lego1"    ).checked = true; }
+
+  document.getElementById('unitsOutput1').value = defaultUnitsOutPrimary;
+  document.getElementById('unitsOutput2').value = defaultUnitsOutSecondary;
+  updateAllConversions();
+
+  // Add event listeners to trigger conversion whenever input changes
+  document.getElementById("inputValue"  ).addEventListener("input",  function() { unitConversion(this); });
+  document.getElementById("unitsOutput1").addEventListener("change", function() { unitConversion(this); });
+  document.getElementById("unitsOutput2").addEventListener("change", function() { unitConversion(this); });
+  document.getElementById("defaultDecimialPlaces"  ).addEventListener("input",  updateAllConversions);
+  document.getElementById("defaultScalingFactor"   ).addEventListener("input",  updateAllConversions);
+  document.getElementById("defaultScalingOperation").addEventListener("change", updateAllConversions);
+
+  // listeners for changing unit systems
+  // Event listener for Imperial button
+  document.getElementById("imperial1").addEventListener("click", function() {
+    generateUnitButtons(this, "imperial", this.id.slice(-1));
+  });
+
+  // Event listener for Metric button
+  document.getElementById("metric1").addEventListener("click", function() {
+    generateUnitButtons(this, "metric", this.id.slice(-1));
+  });
+
+  // Event listener for LEGO button
+  document.getElementById("lego1").addEventListener("click", function() {
+    generateUnitButtons(this, "lego", this.id.slice(-1));
+  });
+  
+  // Perform initial conversion when the page loads
+  // unitConversion(document.getElementById("inputValue"));
+  // document.querySelector('.radio:checked')
+  
+  // alert(document.getElementById("imperial1") + "\n" + defaultSystem + "\n" + document.getElementById("imperial1").id.slice(-1))
+});
