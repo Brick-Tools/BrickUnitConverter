@@ -38,14 +38,11 @@ function reformatUnit(unitIn) {
     Meters: "meters",
     Kilometers: "kilometers"
   };
-  // (unit.charAt(0).toLowerCase() + unit.slice(1)).replace(/ /g,"")
   return units[unitIn];
 }
 
 // Function to generate unit buttons based on the selected system
 function generateUnitButtons(element, system, num) {
-  // alert("element.id: " + element.id + "\n system: " + system + "\n num: " + num);
-  // alert(element.closest('.unit-buttons').innerHTML);
   const unitButtonsContainer = element.closest('.unit-buttons').children[1];
 
   unitButtonsContainer.innerHTML = ""; // Clear previous buttons
@@ -62,15 +59,12 @@ function generateUnitButtons(element, system, num) {
   var label = document.createElement("label");
   label.textContent = "Unit";
   label.setAttribute("class", "section-label" );
-  // label.setAttribute("for", "unitButtonsContainer");
   unitButtonsContainer.appendChild(label);
   
   units.forEach(function(unit) {
     var button = document.createElement("input");
     var btnLabel = document.createElement("label");
     activeUnit = reformatUnit(unit);
-    // alert("unit: " + unit + "\nactiveUnit: " + activeUnit)
-    // button.textContent = unit;
     button.setAttribute("type", "radio"); // Set button type to prevent form submission
     button.setAttribute("id", activeUnit + num);
     button.setAttribute("class", "radioUnitsIn");
@@ -84,33 +78,24 @@ function generateUnitButtons(element, system, num) {
 
     if( isFirstCall && unit == reformatUnit(defaultUnitsIn) ) {
       button.setAttribute("checked", "checked");
-      // document.getElementById("inputValue").placeholder = "Dimension in " + unit;
-      // unitButtonsContainer.closest('.unit-buttons').querySelector('.inputValue').placeholder = "Dimension in " + unit; replaced
       unitButtonsContainer.closest('.unit-buttons').querySelector('.input-label').textContent = "Dimension in " + unit;
       isFirstCall = false;
     }
 
     btnLabel.setAttribute("for", activeUnit + num)
-    // btnLabel.setAttribute("class", "label")
     btnLabel.textContent = unit;
 
     button.addEventListener("click", function() {
-      // var inputValue = document.getElementById("inputValue").value;
-      // unitButtonsContainer.closest('.unit-buttons').querySelector('.inputValue').placeholder = "Dimension in " + this.value; replaced
       unitButtonsContainer.closest('.unit-buttons').querySelector('.input-label').textContent = "Dimension in " + this.value;
       
-      // document.getElementById("inputValue").placeholder = "Dimension in " + this.value;
       unitConversion(this);
     });
-    // unitButtonsContainer.appendChild(button);
-    // unitButtonsContainer.appendChild(btnLabel);
     unitButtonsContainer.appendChild(button);
     unitButtonsContainer.appendChild(btnLabel);
   });
 }
 
 function unitConversion(element) {
-  // alert("unitConversion()");
   const container = element.closest('.container');
   inputUnitInput   = container.querySelector('.radioUnitsIn:checked')
   inputValueInput  = container.querySelector('.inputValue')
@@ -119,7 +104,6 @@ function unitConversion(element) {
   outputUnit2Select = container.querySelector('.unitsOutSecondary')
   outputValue2Input = container.querySelector('.outSecondary')
 
-  // inputUnit = inputUnitInput.id;
   if( inputUnitInput != null ) {
     inputUnit = inputUnitInput.id.slice(0, -1);
     inputValueInput.setAttribute("data-active-unit", inputUnitInput.id.slice(0, -1));
@@ -140,7 +124,6 @@ function unitConversion(element) {
   if (document.getElementById("defaultScalingOperation").value == "divide") {
     scaler = 1 / scaler;
   }
-  // alert(inputUnit + " " + inputValue + " " + outputUnit1 + " " + outputValue1 + " " + outputUnit2 + " " + outputValue2)
 
   var conversionFactors = {
     studs: 0.008,
@@ -178,12 +161,9 @@ function unitConversion(element) {
 
   outputValue1Input.value = outputValue1 + " " + conversionUnit[outputUnit1];
   outputValue2Input.value = outputValue2 + " " + conversionUnit[outputUnit2];
-  // alert(outputValue1 + " " + outputValue2)
 }
 
 function updateAllConversions() {
-  // alert("updateAllConversions()");
-  // Select all input elements with class "inputValue"
   var inputElements = document.querySelectorAll('.inputValue');
 
   // Iterate over each input element
@@ -197,7 +177,6 @@ function updateAllConversions() {
 // Function to duplicate the main container
 function duplicateContainer() {
   numConverters++;
-  // alert(numConverters)
   const containerWrapper = document.getElementById('containerWrapper');
   const lastContainer = containerWrapper.lastElementChild;
 
@@ -205,30 +184,21 @@ function duplicateContainer() {
   const duplicate = lastContainer.cloneNode(true);
 
 
-  // i = 0;
   // Add event listeners for input fields in the duplicated container
   duplicate.querySelectorAll('select, input, label').forEach(input => {
-    // alert(i + ", " + input.id)
-    // i = i + 1;
 
     if( input.name != null ) {
-      // alert("!" + input.name + ", " + input.id)
       input.setAttribute("name", input.name.slice(0,-1) + numConverters);
-      // alert("done")
-      // n = input
     }
 
     // system buttons
     if( input.id != null && input.id != "" ) {
-      // alert("!! " + input.id + "\n" + input.id.slice(0,-1) + numConverters)
       input.setAttribute("id", input.id.slice(0,-1) + numConverters);
-      // alert("done")
       btn = input
 
       if( input.id.includes("imperial") || input.id.includes("metric") || input.id.includes("lego") ) {
         input.addEventListener("click", function() {
             generateUnitButtons(this, input.id.slice(0,-1), input.id.slice(-1));
-            // alert("?" + "btn: " + btn.id + ", inputHTML: " + input.htmlFor)
           });
         
         if( input.id.includes(defaultSystem) ) {
@@ -243,7 +213,6 @@ function duplicateContainer() {
 
     // labels
     if( input.htmlFor != null ) {
-      // alert("!" + input.htmlFor + ", " + typeof(input.htmlFor))
       input.setAttribute("for", input.htmlFor.slice(0,-1) + numConverters);
     }    
 
@@ -372,10 +341,22 @@ window.addEventListener('DOMContentLoaded', function() {
   document.getElementById("lego1").addEventListener("click", function() {
     generateUnitButtons(this, "lego", this.id.slice(-1));
   });
-  
-  // Perform initial conversion when the page loads
-  // unitConversion(document.getElementById("inputValue"));
-  // document.querySelector('.radio:checked')
-  
-  // alert(document.getElementById("imperial1") + "\n" + defaultSystem + "\n" + document.getElementById("imperial1").id.slice(-1))
+
+
+  // Attach event listener to each numeric input
+  const numericInputs = document.querySelectorAll('input[type="number"]');
+  numericInputs.forEach(input => {
+      input.addEventListener('wheel', function(event) {
+          if (event.shiftKey) {
+              event.preventDefault(); // Prevent default scrolling behavior
+              const step = 1; // Set the step value for scrolling
+              if (event.deltaY > 0) {
+                  this.value = parseInt(this.value) - step; // Decrease value on scrolling down
+              } else {
+                  this.value = parseInt(this.value) + step; // Increase value on scrolling up
+              }
+            unitConversion(this)
+          }
+      });
+  });
 });
