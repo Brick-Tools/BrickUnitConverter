@@ -1,8 +1,0 @@
-{
-  "name": "brickunitconverter",
-  "version": "0.1.0",
-  "description": "Unit converter for scale LEGO modeling",
-  "scripts": {
-    "build": "echo 'No build process configured'"
-  }
-}
