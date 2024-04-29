@@ -97,8 +97,8 @@ function generateUnitButtons(element, system, num) {
 
 function unitConversion(element) {
   const container = element.closest('.container');
-  inputUnitInput   = container.querySelector('.radioUnitsIn:checked')
-  inputValueInput  = container.querySelector('.inputValue')
+  inputUnitInput    = container.querySelector('.radioUnitsIn:checked')
+  inputValueInput   = container.querySelector('.inputValue')
   outputUnit1Select = container.querySelector('.unitsOutPrimary')
   outputValue1Input = container.querySelector('.outPrimary')
   outputUnit2Select = container.querySelector('.unitsOutSecondary')
@@ -120,6 +120,11 @@ function unitConversion(element) {
   outputValue2 = outputValue2Input.value;
 
   decimalPlacess = document.getElementById("defaultDecimialPlaces").value;
+  if( decimalPlacess < 0 ) { 
+    document.getElementById("defaultDecimialPlaces").value = 0;
+    decimalPlacess = 0;
+  }
+  
   scaler         = document.getElementById("defaultScalingFactor").value;
   if (document.getElementById("defaultScalingOperation").value == "divide") {
     scaler = 1 / scaler;
@@ -226,7 +231,6 @@ function duplicateContainer() {
   inputField = duplicate.querySelector(".inputValue")
   
   inputField.setAttribute("data-active-unit", defaultUnitsIn);
-  // inputField.setAttribute("placeholder", "Dimension in " + reformatUnit(defaultUnitsIn));
   duplicate.querySelector('.input-label').textContent = "Dimension in " + reformatUnit(defaultUnitsIn);
   duplicate.querySelector('.unitsOutPrimary').value = defaultUnitsOutPrimary
   duplicate.querySelector('.unitsOutSecondary').value = defaultUnitsOutSecondary
@@ -320,8 +324,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
   // Add event listeners to trigger conversion whenever input changes
   document.getElementById("inputValue"  ).addEventListener("input",  function() { unitConversion(this); });
-  document.getElementById("unitsOutput1").addEventListener("change", function() { unitConversion(this); });
-  document.getElementById("unitsOutput2").addEventListener("change", function() { unitConversion(this); });
+  document.getElementById("unitsOutput1").addEventListener("input", function() { unitConversion(this); });
+  document.getElementById("unitsOutput2").addEventListener("input", function() { unitConversion(this); });
   document.getElementById("defaultDecimialPlaces"  ).addEventListener("input",  updateAllConversions);
   document.getElementById("defaultScalingFactor"   ).addEventListener("input",  updateAllConversions);
   document.getElementById("defaultScalingOperation").addEventListener("change", updateAllConversions);
@@ -355,7 +359,7 @@ window.addEventListener('DOMContentLoaded', function() {
               } else {
                   this.value = parseInt(this.value) + step; // Increase value on scrolling up
               }
-            unitConversion(this)
+            updateAllConversions()
           }
       });
   });
