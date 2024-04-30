@@ -159,7 +159,7 @@ function unitConversion(element) {
   };
 
   outputValue1 = scaler * inputValue * conversionFactors[inputUnit] / conversionFactors[outputUnit1];
-  outputValue2 = scaler * (outputValue1-Math.trunc(outputValue1)) * conversionFactors[outputUnit1] / conversionFactors[outputUnit2];
+  outputValue2 = (outputValue1-Math.trunc(outputValue1)) * conversionFactors[outputUnit1] / conversionFactors[outputUnit2];
 
   outputValue1 = outputValue1.toFixed(decimalPlacess);
   outputValue2 = outputValue2.toFixed(decimalPlacess);
