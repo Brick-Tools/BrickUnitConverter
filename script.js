@@ -159,9 +159,9 @@ function unitConversion(element) {
   };
 
   outputValue1 = scaler * inputValue * conversionFactors[inputUnit] / conversionFactors[outputUnit1];
-  outputValue2 = (outputValue1-Math.trunc(outputValue1)) * conversionFactors[outputUnit1] / conversionFactors[outputUnit2];
-
   outputValue1 = outputValue1.toFixed(decimalPlacess);
+  
+  outputValue2 = (outputValue1-Math.trunc(outputValue1)) * conversionFactors[outputUnit1] / conversionFactors[outputUnit2];
   outputValue2 = outputValue2.toFixed(decimalPlacess);
 
   outputValue1Input.value = outputValue1 + " " + conversionUnit[outputUnit1];
@@ -234,6 +234,23 @@ function duplicateContainer() {
   duplicate.querySelector('.input-label').textContent = "Dimension in " + reformatUnit(defaultUnitsIn);
   duplicate.querySelector('.unitsOutPrimary').value = defaultUnitsOutPrimary
   duplicate.querySelector('.unitsOutSecondary').value = defaultUnitsOutSecondary
+
+  // Attach event listener to each numeric input
+  const numericInputs = duplicate.querySelectorAll('input[type="number"]');
+  numericInputs.forEach(input => {
+      input.addEventListener('wheel', function(event) {
+          if (event.shiftKey) {
+              event.preventDefault(); // Prevent default scrolling behavior
+              const step = 1; // Set the step value for scrolling
+              if (event.deltaY > 0) {
+                  this.value = parseInt(this.value) - step; // Decrease value on scrolling down
+              } else {
+                  this.value = parseInt(this.value) + step; // Increase value on scrolling up
+              }
+            updateAllConversions()
+          }
+      });
+  });
   
   containerWrapper.appendChild(duplicate);
   generateUnitButtons(inputField, defaultSystem, numConverters);
