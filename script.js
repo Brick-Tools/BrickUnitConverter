@@ -1,6 +1,6 @@
 // Variables for default settings
-var defaultSystem = "imperial";
-var defaultUnitsIn = "inches";
+var defaultSystem = "metric";
+var defaultUnitsIn = "millimeters";
 var defaultUnitsOutPrimary = "studs";
 var defaultUnitsOutSecondary = "stackedPlates";
 var defaultDecimialPlaces = 2;
