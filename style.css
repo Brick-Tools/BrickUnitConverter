@@ -1,0 +1,199 @@
+:root {
+  --background-color: black;
+  --button-color: #007bff; /* Define your main color variable */
+  --button-hover-color: #0056b3;
+  --font-color: white;
+  --highlight-font-color: #00FF00;
+  --label-color: gray;
+  --outline-color: #ccc;
+  --dropdown-color: #2C303E;
+  --btn-color: #1E3140;
+  --green-tint: #405a48;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  /* background-color: var(--background-color); */
+  background-color: rgb(12, 12, 12);
+  color: var(--font-color);
+  /* text-align: center; */
+  text-align: left;
+  font-family: 'Roboto Mono', monospace;
+}
+
+/* General button style - '?' btn */
+button {
+  padding: 8px 12px;
+  margin: 4px;
+  border-radius: 4px;
+  background-color: var(--btn-color);
+  color: var(--font-color);
+  cursor: pointer;
+  border: 1px solid var(--background-color);
+}
+
+/* Hover effect */
+button:hover {
+  background-color: var(--button-hover-color);
+}
+
+#valueInput,
+#outputValue,
+.input-field,
+.labelDiv {
+  position: relative;
+}
+
+.inlineGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+}
+
+/* Style for input elements */
+input[type="number"],
+select,
+input[type="text"] {
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid var(--outline-color);
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%; /* Adjust the width as needed */
+  margin: auto;
+  background-color: var(--background-color);
+  color: var(--font-color);
+  font-family: 'Roboto Mono', monospace; /* Use Roboto Mono as the font */
+}
+
+input[type="text"],
+input[type="number"] {
+  text-align: right;
+}
+
+input[type="text"] {
+  color: var(--highlight-font-color);
+}
+
+/* Style for select dropdown arrow */
+select {
+  background-color: var(--dropdown-color);
+}
+
+/* Style for input elements on focus */
+input[type="number"]:focus,
+select:focus,
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--highlight-font-color);
+}
+
+
+
+/* Style for header */
+.header {
+  border-bottom: 1px solid var(--outline-color);
+  background-color: var(--background-color);
+}
+.headerInputs {
+  width: 80%;
+  max-width: 1024px;
+  margin: 0 auto; /* Center the header horizontally */
+  padding: 20px 0;
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Align items vertically */
+  justify-content: space-between; /* Space items evenly */
+}
+
+
+/* Style for input fields */
+.input-field {
+  flex: 1; /* Allow items to expand equally */
+  margin: 4px;
+  /* border: 1px solid green; */
+}
+
+/* Style for the label in the header */
+.input-field label {
+  position: absolute;
+  top: -4px;
+  left: 6px;
+  font-size: 10px;
+  color: var(--outline-color);
+  background-color: var(--background-color);
+  border-radius: 5px;
+  padding: 0 5px;
+  max-height: 1.2em; /* Set the maximum height to display only one line */
+  overflow: hidden; /* Hide any overflowed content */
+  user-select: none;
+}
+
+
+/* Style for main columns */
+.containerWrapper {
+  width: 80%;
+  min-width: 256px;
+  max-width: 900px;
+  margin: 0px auto;
+  /* border: 1px solid red; */
+}
+.container {
+  position: static;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: 32px 0px;
+  /* border: 1px solid blue; */
+  border: 1px solid var(--outline-color);
+  border-radius: 8px;
+  background-color: black;
+  /* background-color: rgb(16, 16, 16); */
+}
+.content {
+  flex: 1;
+  margin: 2px;
+  padding: 16px;
+  /* border: 1px solid red; */
+}
+
+input.conversionLabel {
+  width: 133px;
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  font-size: 14px;
+  /* font-weight:bold; */
+  transform: translateX(-50%) translateY(-50%) rotate(-90deg) translateY(-50%) translateY(-8px);
+  text-align: center;
+  border-radius: 8px;
+  color: var(--outline-color);
+}
+
+
+button[id="newConverter"] {
+  border: 1px solid var(--button-color);
+  background-color: var(--background-color);
+  width: 50%;
+  max-width: 1000px;
+  font-size: 2em;
+}
+
+input.inputValuePrimary,
+input.inputValueSecondary,
+input.conversionLabel,
+input.headerInput {
+  border: 1px solid var(--button-color);
+}
+
+.content input {
+  min-width: 64px;
+}
+.content select {
+  min-width: 128px;
+}
+
+.btnContainer {
+  position: static;
+  display: flex;
+  justify-content: center;
+}
