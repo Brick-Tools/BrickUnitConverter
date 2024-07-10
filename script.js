@@ -38,6 +38,23 @@ function reformatUnit(unitIn) {
   return units[unitIn];
 }
 
+function getConversionFactor(unit) {
+  var conversionFactors = {
+    studs: 0.008,
+    stackedBricks: 0.0096,
+    stackedPlates: 0.0032,
+    inches: 0.0254,
+    feet: 0.3048,
+    yards: 0.9144,
+    miles: 1609.344,
+    millimeters: 0.001,
+    centimeters: .01,
+    meters: 1,
+    kilometers: 1000
+  };
+  return conversionFactors[unit];
+}
+
 function unitConversion(element) {
   const container = element.closest('.container');
   inputUnitInput1   = container.querySelector('.inputUnitsPrimary');
@@ -118,28 +135,37 @@ function duplicateContainer() {
   // Clone the last container
   const duplicate = lastContainer.cloneNode(true);
 
-  // Add event listeners for input fields in the duplicated container
+  // update IDs
   duplicate.querySelectorAll('select, input').forEach(input => {
-    input.addEventListener('input', function() { unitConversion(this); } );
-    input.id = input.id.slice(0,-1) + String(numConverters)
-
     if(input.className == 'conversionLabel') {
       input.value = 'Conversion ' + String(numConverters)
     }
+    else {
+      // Attach event listener to each numeric input
+      shiftScrollInput(duplicate);
+      shiftScrollSelect(duplicate);
+      input.addEventListener('input', function() { unitConversion(this); } );
+    }
+    
+    input.id = input.id.slice(0,-1) + String(numConverters);
+  });
+
+  duplicate.querySelectorAll('label').forEach(input=> {
+    input.htmlFor = input.htmlFor.slice(0,-1) + String(numConverters);
   });
 
   // Append the clone to the container wrapper
-  inputField = duplicate.querySelector(".inputValue")
+  inputField = duplicate.querySelector(".inputValue");
+
+  duplicate.querySelector('.inputValuePrimary').value   = 0;
+  duplicate.querySelector('.inputValueSecondary').value = 0;
   
-  duplicate.querySelector('.inputUnitsPrimary').value   = defaultUnitsInPrimary
-  duplicate.querySelector('.inputUnitsSecondary').value = defaultUnitsInSecondary
+  duplicate.querySelector('.inputUnitsPrimary').value   = defaultUnitsInPrimary;
+  duplicate.querySelector('.inputUnitsSecondary').value = defaultUnitsInSecondary;
 
-  duplicate.querySelector('.outputUnitsPrimary').value   = defaultUnitsOutPrimary
-  duplicate.querySelector('.outputUnitsSecondary').value = defaultUnitsOutSecondary
+  duplicate.querySelector('.outputUnitsPrimary').value   = defaultUnitsOutPrimary;
+  duplicate.querySelector('.outputUnitsSecondary').value = defaultUnitsOutSecondary;
 
-  // Attach event listener to each numeric input
-  shiftScrollInput(duplicate);
-  shiftScrollSelect(duplicate);
   
   containerWrapper.appendChild(duplicate);
 
@@ -149,8 +175,9 @@ function duplicateContainer() {
 
   // Set the top position of the button
   button.style.top = buttonTop + 'px';
-}
 
+  updateAllConversions()
+}
 
 
 //////// URL DATA \\\\\\\\
@@ -204,7 +231,7 @@ function parseURLParams() {
 }
 
 // Add event listeners for input change events
-document.querySelectorAll('.header select, .header input[type="number"]').forEach(input => {
+document.querySelectorAll('.header select, .header input[type="number"], .overlaySettings select, .overlaySettings input[type="number"]').forEach(input => {
   input.addEventListener('input', updateURLParams);
 });
 
@@ -217,11 +244,18 @@ function shiftScrollInput(element) {
           event.preventDefault(); // Prevent default scrolling behavior
           const step = 1; // Set the step value for scrolling
           if (event.deltaY > 0) {
-            this.value = parseInt(this.value) - step; // Decrease value on scrolling down
+            if(parseInt(this.value) - step >= this.min || this.min == "") {
+              this.value = parseInt(this.value) - step; // Decrease value on scrolling down
+            }
           } else {
-            this.value = parseInt(this.value) + step; // Increase value on scrolling up
+            if(parseInt(this.value) + step <= this.max || this.max == "") {
+              this.value = parseInt(this.value) + step; // Increase value on scrolling up
+            }
           }
           updateAllConversions()
+          
+          var inputEvent = new Event('input');
+          this.dispatchEvent(inputEvent)
         }
       });
     });
@@ -240,6 +274,9 @@ function shiftScrollSelect(element) {
         }
         updateAllConversions();
         updateURLParams();
+
+        var inputEvent = new Event('input');
+        this.dispatchEvent(inputEvent)
       }
     });
   });
@@ -263,6 +300,7 @@ window.addEventListener('DOMContentLoaded', function() {
   document.getElementById("outputUnitsPrimary1"    ).addEventListener("input", function() { unitConversion(this); });
   document.getElementById("outputUnitsSecondary1"  ).addEventListener("input", function() { unitConversion(this); });
   document.getElementById("defaultDecimialPlaces"  ).addEventListener("input",  updateAllConversions);
+  document.getElementById("defaultDecimialPlaces"  ).addEventListener("input",  calcScale);
   document.getElementById("defaultScalingFactor"   ).addEventListener("input",  updateAllConversions);
   document.getElementById("defaultScalingOperation").addEventListener("input",  updateAllConversions);
       
@@ -270,4 +308,136 @@ window.addEventListener('DOMContentLoaded', function() {
   // Attach event listener to each input
   shiftScrollInput(document);
   shiftScrollSelect(document);
+
+
+  calcScale();
+  // document.body.classList.add("active-overlayScales");
+  // document.body.classList.add("active-blur");
 });
+
+// toggle sidebar nav
+sideNavView = false;
+function toggleNav() {
+  nav = document.getElementById("sideNav")
+  if(sideNavView) {
+    nav.style.width = "0px";
+    sideNavView = false;
+  }
+  else {
+    nav.style.width = "260px";
+    sideNavView = true;
+  }
+}
+
+// toggle sidebar nav
+document.addEventListener('click', function(event) {
+  var sidebar = document.getElementById('sideNav');
+  var head    = document.getElementById('head');
+  body = document.querySelector(".active-blur")
+  // console.log(event.target.contains(document.querySelector(".active-blur")));
+  // console.log(event.target);
+
+  // Check if the click is outside the sidebar
+  if (!sidebar.contains(event.target) && !head.contains(event.target)) {    
+    sidebar.style.width = "0px";
+    sideNavView = false;
+  }
+
+  // close any overlays
+  if (event.target.contains(body)) { closeOverlays() }});
+
+function closeOverlays() {
+    document.body.classList.remove("active-blur");
+    document.body.classList.remove("active-overlayScaleCalc");
+    document.body.classList.remove("active-overlaySettings");
+    document.body.classList.remove("active-overlayInfo");
+    document.body.classList.remove("active-overlayScales");
+  }
+// overlays
+document.querySelector("#openScaleCalc").addEventListener("click", function(){
+  closeOverlays();
+  document.body.classList.add("active-overlayScaleCalc");
+  document.body.classList.add("active-blur");
+  toggleNav()
+});
+document.querySelector("#openSettings").addEventListener("click", function(){
+  closeOverlays();
+  document.body.classList.add("active-overlaySettings");
+  document.body.classList.add("active-blur");
+  toggleNav()
+});
+document.querySelector("#openInfo").addEventListener("click", function(){
+  closeOverlays();
+  document.body.classList.add("active-overlayInfo");
+  document.body.classList.add("active-blur");
+  toggleNav()
+});
+document.querySelector("#openScales").addEventListener("click", function(){
+  closeOverlays();
+  document.body.classList.add("active-overlayScales");
+  document.body.classList.add("active-blur");
+  toggleNav()
+});
+
+// calculate scale
+function calcScale() {
+  numIn   = document.getElementById("unitValueIn").value;
+  unitIn  = document.getElementById("unitsIn").value;
+  numOut  = document.getElementById("unitValueOut").value;
+  unitOut = document.getElementById("unitsOut").value;
+  
+  factor1 = getConversionFactor(unitIn) * numIn;
+  factor2 = getConversionFactor(unitOut) * numOut;
+  ratio = factor1 / factor2
+
+  if(ratio > 1) {
+    ratioValStr = String(ratio.toFixed(decimalPlacess));
+    ratioStr = "1:" + ratioValStr;
+    operation = "Divide"
+  }
+  else {
+    ratioValStr = String((1/ratio).toFixed(decimalPlacess))
+    ratioStr = ratioValStr + ":1"
+    operation = "Multiply"
+  }
+  document.getElementById("scaleCalculation").setAttribute("scaleDec", ratio);
+  document.getElementById("scaleCalculation").value = ratioStr;
+  document.getElementById("scaleInstruction").textContent = operation + " by " + ratioValStr;
+}
+
+// add event listeners to calc scale inputs
+document.querySelectorAll(".calcScale").forEach(element => {
+  element.oninput = calcScale
+});
+
+// set scale button
+document.getElementById("applyScaleBtn").addEventListener("click", function() {
+  scale = Number(document.getElementById("scaleCalculation").getAttribute("scaleDec"));
+  // console.log(scale);
+  
+  if(scale > 1) {
+    defaultScalingFactor = scale;
+    defaultScalingOperation = "divide"
+  }
+  else {
+    defaultScalingFactor = 1 / scale;
+    defaultScalingOperation = "multiply"
+  }
+  
+  document.getElementById('defaultScalingFactor').value = defaultScalingFactor;
+  document.getElementById('defaultScalingOperation').value = defaultScalingOperation;
+
+  updateURLParams()
+  updateAllConversions()
+});
+
+// Event listener for the 'beforeunload' event
+window.addEventListener('beforeunload', function (e) {
+  // Check if any of the input fields are filled
+  // if (fname !== '' || lname !== '' || subject !== '') {
+      // Cancel the event and show alert that
+      // the unsaved changes would be lost
+      e.preventDefault();
+      e.returnValue = '';
+  // }
+})

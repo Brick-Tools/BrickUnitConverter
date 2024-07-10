@@ -9,6 +9,7 @@
   --dropdown-color: #2C303E;
   --btn-color: #1E3140;
   --green-tint: #405a48;
+  --background-color-2: rgb(12, 12, 12);
 }
 
 html {
@@ -21,21 +22,121 @@ html {
   text-align: left;
   font-family: 'Roboto Mono', monospace;
 }
-
-/* General button style - '?' btn */
-button {
-  padding: 8px 12px;
-  margin: 4px;
-  border-radius: 4px;
-  background-color: var(--btn-color);
-  color: var(--font-color);
-  cursor: pointer;
-  border: 1px solid var(--background-color);
+body {
+  margin: 0;
 }
 
-/* Hover effect */
-button:hover {
-  background-color: var(--button-hover-color);
+.inlineGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+}
+
+/* Style for header */
+.header {
+  border-bottom: 1px solid var(--outline-color);
+  background-color: var(--background-color);
+  transition: filter 314ms ease-in-out 0ms;
+}
+.headerInputs {
+  width: 80%;
+  max-width: 1024px;
+  margin: 0 auto; /* Center the header horizontally */
+  padding: 20px 0;
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Align items vertically */
+  justify-content: space-between; /* Space items evenly */
+}
+
+
+/* MARK: Main columns */
+.containerWrapper {
+  width: 80%;
+  min-width: 256px;
+  max-width: 900px;
+  margin: 0px auto;
+  transition: filter 314ms ease-in-out 0ms;
+  /* border: 1px solid red; */
+}
+.container {
+  position: static;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: 32px 0px;
+  border: 1px solid var(--outline-color);
+  /* border: 1px solid blue; */
+  border-radius: 8px;
+  background-color: black;
+  align-items: center;
+  justify-content: center;
+  /* background-color: rgb(16, 16, 16); */
+}
+.content {
+  flex: 1;
+  margin: 2px;
+  padding: 16px;
+  /* border: 1px solid red; */
+}
+
+
+
+/* MARK: overlay containers */
+/* .containerWrapper {
+  width: 80%;
+  min-width: 256px;
+  max-width: 900px;
+  margin: 0px auto;
+  transition: filter 314ms ease-in-out 0ms;
+  border: 1px solid red;
+} */
+.overlay {
+  background-color: black;
+  border: 1px solid var(--outline-color);
+  border-radius: 8px;
+
+ /* border: 1px solid red; */
+}
+.overlayContainer {
+  position: static;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: 32px 0px;
+  align-items: center;
+  justify-content: center;
+
+ /* border: 1px solid green; */
+}
+.overlayContent {
+  flex: 1;
+  margin: 2px;
+  padding: 16px;
+
+ /* border: 1px solid blue; */
+}
+
+
+
+/* MARK: Inputs */
+.input-field {
+  flex: 1; /* Allow items to expand equally */
+  margin: 4px;
+  /* border: 1px solid green; */
+}
+
+/* Style for the label in the header */
+.input-field label{
+  position: absolute;
+  top: -4px;
+  left: 6px;
+  font-size: 10px;
+  color: var(--outline-color);
+  background-color: var(--background-color);
+  border-radius: 5px;
+  padding: 0 5px;
+  max-height: 1.2em; /* Set the maximum height to display only one line */
+  overflow: hidden; /* Hide any overflowed content */
+  user-select: none;
 }
 
 #valueInput,
@@ -43,11 +144,6 @@ button:hover {
 .input-field,
 .labelDiv {
   position: relative;
-}
-
-.inlineGrid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
 }
 
 /* Style for input elements */
@@ -75,11 +171,6 @@ input[type="text"] {
   color: var(--highlight-font-color);
 }
 
-/* Style for select dropdown arrow */
-select {
-  background-color: var(--dropdown-color);
-}
-
 /* Style for input elements on focus */
 input[type="number"]:focus,
 select:focus,
@@ -88,72 +179,17 @@ input[type="text"]:focus {
   border-color: var(--highlight-font-color);
 }
 
-
-
-/* Style for header */
-.header {
-  border-bottom: 1px solid var(--outline-color);
-  background-color: var(--background-color);
-}
-.headerInputs {
-  width: 80%;
-  max-width: 1024px;
-  margin: 0 auto; /* Center the header horizontally */
-  padding: 20px 0;
-  display: flex; /* Use flexbox for layout */
-  align-items: center; /* Align items vertically */
-  justify-content: space-between; /* Space items evenly */
+input.inputValuePrimary,
+input.inputValueSecondary,
+input.conversionLabel,
+input.headerInput,
+input.unitValueIn,
+input.unitValueOut {
+  border: 1px solid var(--button-color);
 }
 
-
-/* Style for input fields */
-.input-field {
-  flex: 1; /* Allow items to expand equally */
-  margin: 4px;
-  /* border: 1px solid green; */
-}
-
-/* Style for the label in the header */
-.input-field label {
-  position: absolute;
-  top: -4px;
-  left: 6px;
-  font-size: 10px;
-  color: var(--outline-color);
-  background-color: var(--background-color);
-  border-radius: 5px;
-  padding: 0 5px;
-  max-height: 1.2em; /* Set the maximum height to display only one line */
-  overflow: hidden; /* Hide any overflowed content */
-  user-select: none;
-}
-
-
-/* Style for main columns */
-.containerWrapper {
-  width: 80%;
-  min-width: 256px;
-  max-width: 900px;
-  margin: 0px auto;
-  /* border: 1px solid red; */
-}
-.container {
-  position: static;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  margin: 32px 0px;
-  /* border: 1px solid blue; */
-  border: 1px solid var(--outline-color);
-  border-radius: 8px;
-  background-color: black;
-  /* background-color: rgb(16, 16, 16); */
-}
-.content {
-  flex: 1;
-  margin: 2px;
-  padding: 16px;
-  /* border: 1px solid red; */
+.content input {
+  min-width: 64px;
 }
 
 input.conversionLabel {
@@ -169,7 +205,18 @@ input.conversionLabel {
   color: var(--outline-color);
 }
 
+/* MARK: Select */
+.content select {
+  min-width: 128px;
+}
 
+/* Style for select dropdown arrow */
+select {
+  background-color: var(--dropdown-color);
+}
+
+
+/* MARK: Button */
 button[id="newConverter"] {
   border: 1px solid var(--button-color);
   background-color: var(--background-color);
@@ -178,22 +225,176 @@ button[id="newConverter"] {
   font-size: 2em;
 }
 
-input.inputValuePrimary,
-input.inputValueSecondary,
-input.conversionLabel,
-input.headerInput {
-  border: 1px solid var(--button-color);
-}
-
-.content input {
-  min-width: 64px;
-}
-.content select {
-  min-width: 128px;
-}
-
 .btnContainer {
   position: static;
   display: flex;
   justify-content: center;
+  transition: filter 314ms ease-in-out 0ms;
+}
+
+/* General button style - '?' btn */
+.duplicateBnt,
+.menuBtn {
+  padding: 8px 12px;
+  margin: 4px;
+  border-radius: 4px;
+  background-color: var(--btn-color);
+  color: var(--font-color);
+  cursor: pointer;
+  border: 1px solid var(--background-color);
+}
+
+/* Hover effect */
+.duplicateBnt:hover,
+.menuBtn:hover { 
+  background-color: var(--button-color);
+  border-color: var(--background-color);
+}
+
+.applyScaleBtn {
+  background-color: var(--background-color);
+  border: 1px solid var(--button-color);
+  border-radius: 4px;
+  font-family: inherit;
+  color: var(--font-color);
+  transition: 250ms;
+}
+
+.applyScaleBtn:hover {
+  cursor: pointer;
+  color: var(--button-color);
+  font-weight: bolder;
+  transition: 250ms;
+}
+
+
+
+
+
+/* MARK: Side Menu */
+.sideNav{
+  height: 100%;
+  width: 0px;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  background-color: var(--background-color);
+  overflow-x: hidden;
+  transition: 0.314s;
+  padding-top: 20px;
+  white-space: nowrap;
+}
+
+.sideNav li,
+.sideNav a {
+  padding: 8px 0px;
+  text-decoration: none;
+  font-size: 20px;
+  color: var(--font-color);
+  /* display: block; */
+  transition: .314s;
+}
+
+.sideNav li:hover,
+.sideNav a:hover {
+  padding-left: 8px;
+  color: var(--button-color);
+  cursor: pointer;
+}
+
+.sideNav span{
+  position: absolute;
+  top: 8px;
+  right: 32px;
+  font-size: 24px;
+  margin-left: 50px;
+  cursor: pointer;
+  transition: .314s;
+  padding: 0em  2em;
+  margin:  0em -2em;
+}
+
+.sideNav span:hover{
+  color: var(--button-color);
+  right: 36px;
+}
+
+/* MARK: overlays */
+.overlay {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 50%;
+  padding: 40px;
+  background-color: var(--background-color);
+  border: 1px solid var(--outline-color);
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px 5px rgba(0, 0, 0, 0.1);
+  margin-top: -25px;
+  opacity: 0;
+  transition: top 0ms ease-in-out 314ms, opacity 314ms ease-in-out, margin-top 314ms ease-in-out;
+}
+.overlay h1,
+.overlay p {
+  margin: 0;
+}
+
+.overlayScaleCalc,
+.overlayInfo,
+.overlaySettings,
+.overlayScales {
+  z-index: 1;
+}
+
+/* .overlayInfo > * {
+  margin: 15px 0;
+} */
+
+.overlayInfo .closeBtn {
+  position: absolute;
+  top: -5px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  background-color: var(--background-color-2);
+  color: var(--font-color);
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.overlayInfo img {
+  width: 100%;
+}
+
+body.active-overlayInfo {
+  overflow: hidden;
+}
+
+body.active-blur .containerWrapper,
+body.active-blur .btnContainer {
+  filter: blur(5px);
+  /* background-color: rgba(0, 0, 0, 0.08); */
+  transition: filter 314ms ease-in-out 0ms;
+  pointer-events: none;
+}
+
+body.active-overlayInfo .overlayInfo,
+body.active-overlayScaleCalc .overlayScaleCalc,
+body.active-overlaySettings .overlaySettings,
+body.active-overlayScales .overlayScales {
+  top: 100px;
+  opacity: 1;
+  margin-top: 0;
+  transition: top 0ms ease-in-out 0ms, opacity 314ms ease-in-out, margin-top 314ms ease-in-out;
+}
+
+.overlayScales ul {
+  list-style-type: circle;
+  padding-left: 20px;
+}
+.overlayScales li {
+  margin: 12px;
 }

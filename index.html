@@ -14,84 +14,14 @@
     <noscript>
       <p class="js-disabled-message">JavaScript is disabled in your browser. It is required for this tool to work.</p>
     </noscript>
+    <!-- MARK: Header -->
     <div class="header">
-      <div class="headerInputs">
-        <a href="info.html">
-          <button>?</button>
-        </a>
-        <!-- default settinds -->
-        <div class="input-field">
-          <select name="defaultUnitsInPrimary" id="defaultUnitsInPrimary">
-            <option value="millimeters">Millimeters</option>
-            <option value="centimeters">Centimeters</option>
-            <option value="meters">Meters</option>
-            <option value="kilometers">Kilometers</option>
-            <hr/>
-            <option value="inches">Inches</option>
-            <option value="feet">Feet</option>
-            <option value="miles">Miles</option>
-            <hr/>
-            <option value="studs">Studs</option>
-            <option value="stackedBricks">Stacked Bricks</option>
-            <option value="stackedPlates">Stacked Plates</option>
-          </select>
-          <label for="defaultUnitsInPrimary">Primary Units In</label>
-        </div>
-        <div class="input-field">
-          <select name="defaultUnitsInSecondary" id="defaultUnitsInSecondary">
-            <option value="millimeters">Millimeters</option>
-            <option value="centimeters">Centimeters</option>
-            <option value="meters">Meters</option>
-            <option value="kilometers">Kilometers</option>
-            <hr/>
-            <option value="inches">Inches</option>
-            <option value="feet">Feet</option>
-            <option value="miles">Miles</option>
-            <hr/>
-            <option value="studs">Studs</option>
-            <option value="stackedBricks">Stacked Bricks</option>
-            <option value="stackedPlates">Stacked Plates</option>
-          </select>
-          <label for="defaultUnitsInSecondary">Secondary Units In</label>
-        </div>
-        <div class="input-field">
-          <select name="defaultUnitsOutPrimary" id="defaultUnitsOutPrimary">
-            <option value="millimeters">Millimeters</option>
-            <option value="centimeters">Centimeters</option>
-            <option value="meters">Meters</option>
-            <option value="kilometers">Kilometers</option>
-            <hr/>
-            <option value="inches">Inches</option>
-            <option value="feet">Feet</option>
-            <option value="miles">Miles</option>
-            <hr/>
-          <option value="studs">Studs</option>
-          <option value="stackedBricks">Stacked Bricks</option>
-          <option value="stackedPlates">Stacked Plates</option>
-        </select>
-          <label for="defaultUnitsOutPrimary">Primary Units Out</label>
-        </div>
-        <div class="input-field">
-          <select name="defaultUnitsOutSecondary" id="defaultUnitsOutSecondary">
-            <option value="millimeters">Millimeters</option>
-            <option value="centimeters">Centimeters</option>
-            <option value="meters">Meters</option>
-            <option value="kilometers">Kilometers</option>
-            <hr/>
-            <option value="inches">Inches</option>
-            <option value="feet">Feet</option>
-            <option value="miles">Miles</option>
-            <hr/>
-          <option value="studs">Studs</option>
-          <option value="stackedBricks">Stacked Bricks</option>
-          <option value="stackedPlates">Stacked Plates</option>
-        </select>
-          <label for="defaultUnitsOutSecondary">Secondary Units Out</label>
-        </div>
-  
+      <div id="head" class="headerInputs">
+        <span onclick="toggleNav()"><button class="menuBtn">&#9776;</button></span>
+        
         <!-- Decimal places -->
         <div class="input-field">
-          <input type="number" id="defaultDecimialPlaces" class="headerInput" value=2 required>
+          <input type="number" id="defaultDecimialPlaces" class="headerInput" value=2 min="0" max="100" required>
           <label for="defaultDecimialPlaces">Decimal Places</label>
         </div>
         <!-- Scaling factor -->
@@ -110,16 +40,242 @@
         </div>
       </div>
     </div>
-    
+
+    <!-- MARK: Menu -->
+    <div id="sideNav" class="sideNav">
+      <header><span onclick="toggleNav()">&larr;</span></header>
+      <ul>
+        <li id="openScaleCalc">Scale Calculator</li>
+        <li id="openSettings">Default Settings</li>
+        <li id="openInfo">How to Use</li>
+        <hr>
+        <li id="openScales">Exploring Scales</li>
+        <li><a href="https://brick-tools.com">Home Page</a></li>
+      </ul>
+    </div>
+
+    <!-- MARK: Overlay Scale -->
+    <div class="overlayScaleCalc overlay">
+      <div class="input-field">
+        <!-- <div class="overlay"> -->
+
+          <!-- heading -->
+          <div class="overlayContainer">
+            <h1>Calculate Scale</h1>
+          </div>
+
+          <!-- unit in -->
+          <div class="overlayContainer">
+            <div class="overlayContent">
+              <div class="inlineGrid">
+                <!-- num in -->
+                <div id="valueInput">
+                  <input type="number" id="unitValueIn" class="unitValueIn calcScale" min="1" value="1" required>
+                  <label class="input-label" for="unitValueIn"># of Units In</label>
+                </div>
+                <!-- unit in -->
+                <div>
+                  <select class="inputUnitsPrimary calcScale" name="unitsIn" id="unitsIn">
+                    <option value="millimeters">Millimeters</option>
+                    <option value="centimeters">Centimeters</option>
+                    <option value="meters">Meters</option>
+                    <option value="kilometers">Kilometers</option>
+                    <hr/>
+                    <option value="inches">Inches</option>
+                    <option value="feet">Feet</option>
+                    <option value="miles">Miles</option>
+                    <hr/>
+                    <option value="studs">Studs</option>
+                    <option value="stackedBricks">Stacked Bricks</option>
+                    <option value="stackedPlates">Stacked Plates</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+  
+            <h1>=</h1>
+            
+            <!-- Output units selection -->
+            <div class="overlayContent">
+              <div class="inlineGrid">
+
+                <!-- Converted units1 -->
+                <div id="outputValue">
+                  <input class="unitValueOut calcScale" id="unitValueOut" type="number" min="1" value="1" required>
+                  <label class="input-label" for="unitValueOut"># of Units Out</label>
+                </div>
+                
+                <select class="outputUnitsPrimary calcScale" name="unitsOut" id="unitsOut">
+                  <option value="studs">Studs</option>
+                  <option value="stackedBricks">Stacked Bricks</option>
+                  <option value="stackedPlates">Stacked Plates</option>
+                  <hr/>
+                  <option value="millimeters">Millimeters</option>
+                  <option value="centimeters">Centimeters</option>
+                  <option value="meters">Meters</option>
+                  <option value="kilometers">Kilometers</option>
+                  <hr/>
+                  <option value="inches">Inches</option>
+                  <option value="feet">Feet</option>
+                  <option value="miles">Miles</option>
+                </select>
+                <!-- <label class="input-label" for="unitsOut"># of Units Out</label> -->
+
+              </div>
+            </div>
+
+          </div> <!-- end .overlayContainer -->
+          <div class="overlayContainer">
+            
+            <!-- scale result -->
+            <div class="inlineGrid">
+              <div id="outputValue">
+                <input class="outputValuePrimary" type="text" id="scaleCalculation" value="1" readonly>
+                <label class="input-label" for="scaleCalculation">Scale</label>
+              </div>
+              <button id="applyScaleBtn" class="applyScaleBtn">Apply Scale</button>
+            </div>
+          </div>
+          <div class="overlayContainer">
+            <p id="scaleInstruction">Multiply by 8</p>
+          </div>
+          <!-- end .overlay -->
+        <!-- </div> -->
+      </div> <!-- end .input-field -->
+    </div>
+
+    <!-- MARK: Settings -->
+     <div class="overlaySettings overlay">
+      <div class="overlayContainer">
+        <h1>Default Settings</h1>
+      </div>
+      
+      <!-- default settinds -->
+      <div class="input-field">
+        <select name="defaultUnitsInPrimary" id="defaultUnitsInPrimary">
+          <option value="millimeters">Millimeters</option>
+          <option value="centimeters">Centimeters</option>
+          <option value="meters">Meters</option>
+          <option value="kilometers">Kilometers</option>
+          <hr/>
+          <option value="inches">Inches</option>
+          <option value="feet">Feet</option>
+          <option value="miles">Miles</option>
+          <hr/>
+          <option value="studs">Studs</option>
+          <option value="stackedBricks">Stacked Bricks</option>
+          <option value="stackedPlates">Stacked Plates</option>
+        </select>
+        <label for="defaultUnitsInPrimary">Primary Units In</label>
+      </div>
+      <div class="input-field">
+        <select name="defaultUnitsInSecondary" id="defaultUnitsInSecondary">
+          <option value="millimeters">Millimeters</option>
+          <option value="centimeters">Centimeters</option>
+          <option value="meters">Meters</option>
+          <option value="kilometers">Kilometers</option>
+          <hr/>
+          <option value="inches">Inches</option>
+          <option value="feet">Feet</option>
+          <option value="miles">Miles</option>
+          <hr/>
+          <option value="studs">Studs</option>
+          <option value="stackedBricks">Stacked Bricks</option>
+          <option value="stackedPlates">Stacked Plates</option>
+        </select>
+        <label for="defaultUnitsInSecondary">Secondary Units In</label>
+      </div>
+      <div class="input-field">
+        <select name="defaultUnitsOutPrimary" id="defaultUnitsOutPrimary">
+          <option value="millimeters">Millimeters</option>
+          <option value="centimeters">Centimeters</option>
+          <option value="meters">Meters</option>
+          <option value="kilometers">Kilometers</option>
+          <hr/>
+          <option value="inches">Inches</option>
+          <option value="feet">Feet</option>
+          <option value="miles">Miles</option>
+          <hr/>
+        <option value="studs">Studs</option>
+        <option value="stackedBricks">Stacked Bricks</option>
+        <option value="stackedPlates">Stacked Plates</option>
+      </select>
+        <label for="defaultUnitsOutPrimary">Primary Units Out</label>
+      </div>
+      <div class="input-field">
+        <select name="defaultUnitsOutSecondary" id="defaultUnitsOutSecondary">
+          <option value="millimeters">Millimeters</option>
+          <option value="centimeters">Centimeters</option>
+          <option value="meters">Meters</option>
+          <option value="kilometers">Kilometers</option>
+          <hr/>
+          <option value="inches">Inches</option>
+          <option value="feet">Feet</option>
+          <option value="miles">Miles</option>
+          <hr/>
+        <option value="studs">Studs</option>
+        <option value="stackedBricks">Stacked Bricks</option>
+        <option value="stackedPlates">Stacked Plates</option>
+      </select>
+        <label for="defaultUnitsOutSecondary">Secondary Units Out</label>
+      </div>
+
+       <div class="overlayContainer">
+         <p>Bookmark this page to save your settings</p>
+       </div>
+     </div>
+
+    <!-- MARK: Overlay Info -->
+    <div class="overlayInfo overlay">
+      <!-- <button class="closeBtn">&times;</button> -->
+      <img src="BrickUnitConverterInfo.webp" alt="Site Features Infographic">
+    </div>
+
+    <!-- MARK: Overlay Scales -->
+    <div class="overlayScales overlay">
+      <div class="overlayContainer">
+        <h1>LEGO Scales</h1>
+      </div>
+      <ul>
+        <li>
+          <p>Common "Minifigure Scales":</p>
+          <p>1 fig(5 studs) = 6 feet</p>
+          <p>1 stud = 1 foot / 30cm</p>
+          <p>3 studs = 1 meter</p>
+        </li>
+        <li>
+          <p>Common Speed Champions tire diameter &empty;: 24mm</p>
+        </li>
+        <p>Use the Scale Calculator with your real measurement and model size measurement to calculate your scale</p>
+        <hr>
+        <li>
+          <p>Speed Champions(2024): 1:25 - 1:30</p>
+        </li>
+        <li>
+          <p>Technic: 1:8($300+ cars), 1:12-1:10($100+ cars), 1:16($50 cars)</p>
+        </li>
+        <li><p>Icons: 1:12-1:14 ($100-200 cars)</p></li>
+        <li>
+          <p>The correct scale: Whatever you can make work</p>
+        </li>
+      </ul>
+
+    </div>
+
+
+<!-- MARK: Calculators -->
     <div class="containerWrapper" id="containerWrapper">
       
       <div class="input-field">
         <input type="text" class="conversionLabel" id="conversionLabel1" value="Conversion 1">
         <div class="container">
+
+          <!-- MARK: Inputs - left-->
           <div class="content">
+            <!-- Input 1 -->
             <div class="inlineGrid">
               <div id="valueInput">
-                <input type="number" id="inputValuePrimary1" class="inputValuePrimary" value="0" required>
+                <input type="number" id="inputValuePrimary1" class="inputValuePrimary" value="0" min="0" required>
                 <label class="input-label" for="inputValuePrimary1">Dimension Input</label>
               </div>
               <div>
@@ -142,12 +298,12 @@
 
             <br>
 
+            <!-- Input 2 -->
             <div class="inlineGrid">
               <div id="valueInput">
-                <input type="number" id="inputValueSecondary1" class="inputValueSecondary" value="0" required>
+                <input type="number" id="inputValueSecondary1" class="inputValueSecondary" value="0" min="0" required>
                 <label class="input-label" for="inputValueSecondary1">2nd Dimension Input</label>
               </div>
-
               <div class="inline-child">
                 <select class="inputUnitsSecondary inline-child" name="inputUnitsSecondary1" id="inputUnitsSecondary1">
                   <option value="millimeters">Millimeters</option>
@@ -165,18 +321,19 @@
                 </select>
               </div>
             </div>
+            <!-- end Inputs -->
           </div>
 
+
           
-          <!-- Output units selection -->
+          <!-- MARK: Output - right -->
           <div class="content">
             <div class="inlineGrid">
-              <!-- Converted units1 -->
+              <!-- output 1 -->
               <div id="outputValue">
                 <input class="outputValuePrimary" type="text" id="outputValuePrimary1" readonly>
                 <label class="input-label" for="outputValuePrimary1">Conversion</label>
               </div>
-              
               <select class="outputUnitsPrimary" name="outputUnitsPrimary1" id="outputUnitsPrimary1">
                 <option value="studs">Studs</option>
                 <option value="stackedBricks">Stacked Bricks</option>
@@ -195,14 +352,12 @@
 
             <br>
 
-            <!-- Secondary units for fraction of main unit -->
+            <!-- output 2 -->
             <div class="inlineGrid">
-              <!-- Converted units2 -->
               <div id="outputValue">
                 <input class="outputValueSecondary" type="text" id="outputValueSecondary1" readonly>
                 <label class="input-label" for="outputValueSecondary1">Secondary Conversion</label>
               </div>
-
                 <select class="outputUnitsSecondary" name="outputUnitsSecondary1" id="outputUnitsSecondary1">
                   <option value="studs">Studs</option>
                   <option value="stackedPlates">Stacked Plates</option>
@@ -218,6 +373,8 @@
                   <option value="miles">Miles</option>
                 </select>
             </div>
+
+            <!-- end output -->
           </div>
         </div> <!-- end container -->
       </div>
@@ -228,7 +385,7 @@
     <br>
     <!-- Button to duplicate container -->
     <div class="btnContainer">
-      <button id="newConverter" onclick="duplicateContainer()">+</button>
+      <button id="newConverter" class="duplicateBnt" onclick="duplicateContainer()">+</button>
     </div>
     
 
