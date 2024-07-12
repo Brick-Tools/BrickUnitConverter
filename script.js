@@ -145,11 +145,11 @@ function duplicateContainer() {
       input.addEventListener('input', function() { unitConversion(this); } );
     }
     
-      shiftScrollInput(duplicate);
-      shiftScrollSelect(duplicate);
-    
     input.id = input.id.slice(0,-1) + String(numConverters);
   });
+    
+  shiftScrollInput(duplicate);
+  shiftScrollSelect(duplicate);
 
   duplicate.querySelectorAll('label').forEach(input=> {
     input.htmlFor = input.htmlFor.slice(0,-1) + String(numConverters);
