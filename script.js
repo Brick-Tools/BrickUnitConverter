@@ -142,10 +142,11 @@ function duplicateContainer() {
     }
     else {
       // Attach event listener to each numeric input
-      shiftScrollInput(duplicate);
-      shiftScrollSelect(duplicate);
       input.addEventListener('input', function() { unitConversion(this); } );
     }
+    
+      shiftScrollInput(duplicate);
+      shiftScrollSelect(duplicate);
     
     input.id = input.id.slice(0,-1) + String(numConverters);
   });
