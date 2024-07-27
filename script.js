@@ -147,7 +147,7 @@ function duplicateContainer() {
     
     input.id = input.id.slice(0,-1) + String(numConverters);
   });
-    
+
   shiftScrollInput(duplicate);
   shiftScrollSelect(duplicate);
 
@@ -239,27 +239,27 @@ document.querySelectorAll('.header select, .header input[type="number"], .overla
 // add shift scroll
 function shiftScrollInput(element) {
   const numericInputs = element.querySelectorAll('input[type="number"]');
-    numericInputs.forEach(input => {
-      input.addEventListener('wheel', function(event) {
-        if (event.shiftKey) {
-          event.preventDefault(); // Prevent default scrolling behavior
-          const step = 1; // Set the step value for scrolling
-          if (event.deltaY > 0) {
-            if(parseInt(this.value) - step >= this.min || this.min == "") {
-              this.value = parseInt(this.value) - step; // Decrease value on scrolling down
-            }
-          } else {
-            if(parseInt(this.value) + step <= this.max || this.max == "") {
-              this.value = parseInt(this.value) + step; // Increase value on scrolling up
-            }
+  numericInputs.forEach(input => {
+    input.addEventListener('wheel', function(event) {
+      if (event.shiftKey) {
+        event.preventDefault(); // Prevent default scrolling behavior
+        const step = 1; // Set the step value for scrolling
+        if (event.deltaY > 0) {
+          if(parseInt(this.value) - step >= this.min || this.min == "") {
+            this.value = parseInt(this.value) - step; // Decrease value on scrolling down
           }
-          updateAllConversions()
-          
-          var inputEvent = new Event('input');
-          this.dispatchEvent(inputEvent)
+        } else {
+          if(parseInt(this.value) + step <= this.max || this.max == "") {
+            this.value = parseInt(this.value) + step; // Increase value on scrolling up
+          }
         }
-      });
+        updateAllConversions()
+        
+        var inputEvent = new Event('input');
+        this.dispatchEvent(inputEvent)
+      }
     });
+  });
 }
 function shiftScrollSelect(element) {
   const selectInputs = element.querySelectorAll('select');
