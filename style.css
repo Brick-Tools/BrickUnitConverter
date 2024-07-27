@@ -28,7 +28,8 @@ body {
 
 .inlineGrid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: minmax(6em, 1fr) minmax(8em, 1.6fr);
+  /* border: 5px solid rebeccapurple; */
 }
 
 /* Style for header */
@@ -39,7 +40,7 @@ body {
 }
 .headerInputs {
   width: 80%;
-  max-width: 1024px;
+  max-width: 45em;
   margin: 0 auto; /* Center the header horizontally */
   padding: 20px 0;
   display: flex; /* Use flexbox for layout */
@@ -48,11 +49,17 @@ body {
 }
 
 
+
+
+/* @media all and (min-width: 481px) and (max-width: 4800px) { */
+/* } */
+
+
 /* MARK: Main columns */
 .containerWrapper {
   width: 80%;
-  min-width: 256px;
-  max-width: 900px;
+  min-width: 16em;
+  max-width: 45em;
   margin: 0px auto;
   transition: filter 314ms ease-in-out 0ms;
   /* border: 1px solid red; */
@@ -75,20 +82,13 @@ body {
   flex: 1;
   margin: 2px;
   padding: 16px;
+  
   /* border: 1px solid red; */
 }
 
 
 
 /* MARK: overlay containers */
-/* .containerWrapper {
-  width: 80%;
-  min-width: 256px;
-  max-width: 900px;
-  margin: 0px auto;
-  transition: filter 314ms ease-in-out 0ms;
-  border: 1px solid red;
-} */
 .overlay {
   background-color: black;
   border: 1px solid var(--outline-color);
@@ -121,6 +121,7 @@ body {
 .input-field {
   flex: 1; /* Allow items to expand equally */
   margin: 4px;
+
   /* border: 1px solid green; */
 }
 
@@ -134,7 +135,7 @@ body {
   background-color: var(--background-color);
   border-radius: 5px;
   padding: 0 5px;
-  max-height: 1.2em; /* Set the maximum height to display only one line */
+  max-height: 1.2em;
   overflow: hidden; /* Hide any overflowed content */
   user-select: none;
 }
@@ -189,7 +190,8 @@ input.unitValueOut {
 }
 
 .content input {
-  min-width: 64px;
+  /* min-width: 64px; */
+  /* max-width: 10em; */
 }
 
 input.conversionLabel {
@@ -207,7 +209,9 @@ input.conversionLabel {
 
 /* MARK: Select */
 .content select {
-  min-width: 128px;
+  /* min-width: 128px; */
+  /* max-width: 20em; */
+  /* border: 1px solid rebeccapurple; */
 }
 
 /* Style for select dropdown arrow */
@@ -321,12 +325,15 @@ button[id="newConverter"] {
 
 /* MARK: overlays */
 .overlay {
+  pointer-events: none;
   position: absolute;
   top: -100%;
   left: 50%;
   transform: translate(-50%, 0);
   width: 50%;
-  padding: 40px;
+  /* min-width: 20em; */
+  max-width: 60em;
+  padding: 24px;
   background-color: var(--background-color);
   border: 1px solid var(--outline-color);
   border-radius: 10px;
@@ -334,10 +341,47 @@ button[id="newConverter"] {
   margin-top: -25px;
   opacity: 0;
   transition: top 0ms ease-in-out 314ms, opacity 314ms ease-in-out, margin-top 314ms ease-in-out;
+  
+  /* border-color: red; */
 }
 .overlay h1,
 .overlay p {
   margin: 0;
+}
+.overlay h1 {
+  text-align: center;
+}
+.overlaySettings {
+  max-width: 24em;
+}
+.overlaySettings .input-field {
+  margin: 1em auto;
+  max-width: 16em;
+}
+.overlaySettings p {
+  text-align: center;
+}
+/* .overlayScaleCalc {
+  text-align: center;
+} */
+.overlayScaleCalc .overlayContainer {
+  /* border: 1px solid rebeccapurple; */
+  margin: 1em auto;
+  max-width: 32em;
+}
+.overlayScaleCalc .overlayContent {
+  /* border: 1px solid rebeccapurple; */
+  /* max-width: 13em; */
+  margin: auto;
+  
+}
+.overlayScaleCalc .inlineGrid {
+  /* border: 1px solid rebeccapurple; */
+  text-align: center;
+  /* max-width: 20em; */
+}
+.overlayScaleCalc h1 {
+  /* border: 1px solid rebeccapurple; */
 }
 
 .overlayScaleCalc,
@@ -346,10 +390,6 @@ button[id="newConverter"] {
 .overlayScales {
   z-index: 1;
 }
-
-/* .overlayInfo > * {
-  margin: 15px 0;
-} */
 
 .overlayInfo .closeBtn {
   position: absolute;
@@ -376,7 +416,7 @@ body.active-overlayInfo {
 body.active-blur .containerWrapper,
 body.active-blur .btnContainer {
   filter: blur(5px);
-  /* background-color: rgba(0, 0, 0, 0.08); */
+  /* background-color: rgba(0, 0, 0, 0.08); */;
   transition: filter 314ms ease-in-out 0ms;
   pointer-events: none;
 }
@@ -385,6 +425,7 @@ body.active-overlayInfo .overlayInfo,
 body.active-overlayScaleCalc .overlayScaleCalc,
 body.active-overlaySettings .overlaySettings,
 body.active-overlayScales .overlayScales {
+  pointer-events: all;
   top: 100px;
   opacity: 1;
   margin-top: 0;
@@ -397,4 +438,17 @@ body.active-overlayScales .overlayScales {
 }
 .overlayScales li {
   margin: 12px;
+}
+
+
+
+/* MARK: Small Screen */
+@media all and (min-width: 0px) and (max-width: 600px) {
+  .overlay {
+    width: 75%;
+    padding: 1em;
+  }
+  .overlayScales ul {
+    padding-left: 0.5em;
+  }
 }
