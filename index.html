@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LEGO Model Scale Calculator</title>
+  <title>LEGO Scale Converter</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap">
   <link rel="icon" type="image/webp" href="favicons/bricks16.webp">
   <link rel="icon" type="image/webp" href="favicons/bricks32.webp">
   <link rel="icon" type="image/webp" href="favicons/bricks48.webp">
   <link rel="icon" type="image/webp" href="favicons/bricks64.webp">
-  <link href="style.css" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap">
   <link rel="stylesheet" href="info.html">
 </head>
   <body>
@@ -25,12 +25,12 @@
         <!-- Decimal places -->
         <div class="input-field">
           <input type="number" id="defaultDecimialPlaces" class="headerInput" value=2 min="0" max="100" required>
-          <label for="defaultDecimialPlaces">Decimal Places</label>
+          <label class="edge-label" for="defaultDecimialPlaces">Decimal Places</label>
         </div>
         <!-- Scaling factor -->
         <div class="input-field">
           <input type="number" id="defaultScalingFactor" class="headerInput" value=1 required>
-          <label for="defaultScalingFactor">Scaling Factor</label>
+          <label class="edge-label" for="defaultScalingFactor">Scaling Factor</label>
         </div>
   
         <!-- Scaling operation -->
@@ -39,7 +39,7 @@
               <option value="divide">Divide</option>
               <option value="multiply">Multiply</option>
           </select>
-          <label for="defaultScalingOperation">Scaling Operation</label>
+          <label class="edge-label" for="defaultScalingOperation">Scaling Operation</label>
         </div>
       </div>
     </div>
@@ -74,7 +74,7 @@
                 <!-- num in -->
                 <div id="valueInput">
                   <input type="number" id="unitValueIn" class="unitValueIn calcScale" min="1" value="1" required>
-                  <label class="input-label" for="unitValueIn"># of Units In</label>
+                  <label class="input-label edge-label" for="unitValueIn"># of Units In</label>
                 </div>
                 <!-- unit in -->
                 <div>
@@ -105,7 +105,7 @@
                 <!-- Converted units1 -->
                 <div id="outputValue">
                   <input class="unitValueOut calcScale" id="unitValueOut" type="number" min="1" value="1" required>
-                  <label class="input-label" for="unitValueOut"># of Units Out</label>
+                  <label class="input-label edge-label" for="unitValueOut"># of Units Out</label>
                 </div>
                 
                 <select class="outputUnitsPrimary calcScale" name="unitsOut" id="unitsOut">
@@ -134,7 +134,7 @@
             <div class="inlineGrid">
               <div id="outputValue">
                 <input class="outputValuePrimary" type="text" id="scaleCalculation" value="1" readonly>
-                <label class="input-label" for="scaleCalculation">Scale</label>
+                <label class="input-label edge-label" for="scaleCalculation">Scale</label>
               </div>
               <button id="applyScaleBtn" class="applyScaleBtn">Apply Scale</button>
             </div>
@@ -169,7 +169,7 @@
           <option value="stackedBricks">Stacked Bricks</option>
           <option value="stackedPlates">Stacked Plates</option>
         </select>
-        <label for="defaultUnitsInPrimary">Primary Units In</label>
+        <label class="edge-label" for="defaultUnitsInPrimary">Primary Units In</label>
       </div>
       <div class="input-field">
         <select name="defaultUnitsInSecondary" id="defaultUnitsInSecondary">
@@ -186,7 +186,7 @@
           <option value="stackedBricks">Stacked Bricks</option>
           <option value="stackedPlates">Stacked Plates</option>
         </select>
-        <label for="defaultUnitsInSecondary">Secondary Units In</label>
+        <label class="edge-label" for="defaultUnitsInSecondary">Secondary Units In</label>
       </div>
       <div class="input-field">
         <select name="defaultUnitsOutPrimary" id="defaultUnitsOutPrimary">
@@ -203,7 +203,7 @@
         <option value="stackedBricks">Stacked Bricks</option>
         <option value="stackedPlates">Stacked Plates</option>
       </select>
-        <label for="defaultUnitsOutPrimary">Primary Units Out</label>
+        <label class="edge-label" for="defaultUnitsOutPrimary">Primary Units Out</label>
       </div>
       <div class="input-field">
         <select name="defaultUnitsOutSecondary" id="defaultUnitsOutSecondary">
@@ -220,7 +220,7 @@
         <option value="stackedBricks">Stacked Bricks</option>
         <option value="stackedPlates">Stacked Plates</option>
       </select>
-        <label for="defaultUnitsOutSecondary">Secondary Units Out</label>
+        <label class="edge-label" for="defaultUnitsOutSecondary">Secondary Units Out</label>
       </div>
 
        <div class="overlayContainer">
@@ -279,7 +279,7 @@
             <div class="inlineGrid">
               <div id="valueInput">
                 <input type="number" id="inputValuePrimary1" class="inputValuePrimary" value="0" min="0" required>
-                <label class="input-label" for="inputValuePrimary1">Dimension Input</label>
+                <label class="input-label edge-label" for="inputValuePrimary1">Dimension Input</label>
               </div>
               <div>
                 <select class="inputUnitsPrimary inline-child" name="inputUnitsPrimary1" id="inputUnitsPrimary1">
@@ -305,7 +305,7 @@
             <div class="inlineGrid">
               <div id="valueInput">
                 <input type="number" id="inputValueSecondary1" class="inputValueSecondary" value="0" min="0" required>
-                <label class="input-label" for="inputValueSecondary1">2nd Dimension Input</label>
+                <label class="input-label edge-label" for="inputValueSecondary1">2nd Dimension Input</label>
               </div>
               <div class="inline-child">
                 <select class="inputUnitsSecondary inline-child" name="inputUnitsSecondary1" id="inputUnitsSecondary1">
@@ -335,7 +335,7 @@
               <!-- output 1 -->
               <div id="outputValue">
                 <input class="outputValuePrimary" type="text" id="outputValuePrimary1" readonly>
-                <label class="input-label" for="outputValuePrimary1">Conversion</label>
+                <label class="input-label edge-label" for="outputValuePrimary1">Conversion</label>
               </div>
               <select class="outputUnitsPrimary" name="outputUnitsPrimary1" id="outputUnitsPrimary1">
                 <option value="studs">Studs</option>
@@ -359,7 +359,7 @@
             <div class="inlineGrid">
               <div id="outputValue">
                 <input class="outputValueSecondary" type="text" id="outputValueSecondary1" readonly>
-                <label class="input-label" for="outputValueSecondary1">Secondary Conversion</label>
+                <label class="input-label edge-label" for="outputValueSecondary1">Secondary Conversion</label>
               </div>
                 <select class="outputUnitsSecondary" name="outputUnitsSecondary1" id="outputUnitsSecondary1">
                   <option value="studs">Studs</option>
@@ -379,6 +379,19 @@
 
             <!-- end output -->
           </div>
+          
+          <!-- <div> -->
+          <details>
+            <summary>Options</summary>
+            <div class="inline">
+              <input type="checkbox" class="localScale" id="localScale1">
+              <label for="localScale1" class="localScaleLabel">Local Scale</label>
+              <input type="number" class="localScaleValue" id="localScaleValue1" value="1" readonly>
+              <div>
+                <input type="button" value="Close" class="closeBtn" id="closeBtn1">
+              </div>
+            </div>
+          </details>
         </div> <!-- end container -->
       </div>
 

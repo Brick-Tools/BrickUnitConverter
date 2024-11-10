@@ -32,6 +32,69 @@ body {
   /* border: 5px solid rebeccapurple; */
 }
 
+.inline {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+  /* justify-content: space-between; */
+  /* border: 1px solid palegoldenrod; */
+}
+.inline > :nth-last-child(1) {
+  margin-left: 2em;
+  padding-left: 2em;
+  border-left: 1px solid var(--outline-color);
+}
+.inline input[type="checkbox"] {
+  margin: 0.5em;
+}
+.inline label {
+  width: 5ch;
+  margin-right: 0.5em;
+  color: gray;
+}
+.inline input[type="number"] {
+  width: 8ch;
+  /* margin-left: 1em; */
+  /* background-color: white; */
+  color: gray;
+}
+.inline input[type="number"].active,
+.localScaleLabel.active {
+  /* background-color: gray; */
+  color: var(--font-color);
+}
+.inline input[type="button"] {
+  width: 6em;
+  height: 3em;
+  color: var(--font-color);
+  background-color: rgb(82, 0, 0);
+  border: 1px solid var(--outline-color);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* details */
+ details:hover {
+  /* cursor: pointer; */
+}
+summary {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1em;
+  /* font-weight: bold; */
+}
+summary::after {
+  content: '';
+  /* width: 0;  */
+  /* height: 0;  */
+  border-top: 10px solid var(--font-color);
+  border-inline: 7px solid transparent;
+  /* transition: 0.2s; */
+}
+
+
 /* Style for header */
 .header {
   border-bottom: 1px solid var(--outline-color);
@@ -67,21 +130,25 @@ body {
 .container {
   position: static;
   display: flex;
-  flex-flow: row wrap;
+  flex-wrap: wrap;
   justify-content: center;
+  /* flex-flow: row wrap; */
   margin: 32px 0px;
+  padding: 0.5em;
   border: 1px solid var(--outline-color);
   /* border: 1px solid blue; */
   border-radius: 8px;
   background-color: black;
   align-items: center;
-  justify-content: center;
   /* background-color: rgb(16, 16, 16); */
+}
+.container > * {
+  flex: 1 1 50%;
 }
 .content {
   flex: 1;
   margin: 2px;
-  padding: 16px;
+  padding: 0.5em;
   
   /* border: 1px solid red; */
 }
@@ -126,7 +193,7 @@ body {
 }
 
 /* Style for the label in the header */
-.input-field label{
+.edge-label{
   position: absolute;
   top: -4px;
   left: 6px;

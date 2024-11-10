@@ -65,6 +65,8 @@ function unitConversion(element) {
   outputValue1Input = container.querySelector('.outputValuePrimary');
   outputUnit2Select = container.querySelector('.outputUnitsSecondary');
   outputValue2Input = container.querySelector('.outputValueSecondary');
+  localScale        = container.querySelector('.localScale');
+  localScaleValue   = container.querySelector('.localScaleValue');
   
   inputUnit1   = inputUnitInput1.value;
   inputUnit2   = inputUnitInput2.value;
@@ -84,9 +86,17 @@ function unitConversion(element) {
     decimalPlacess = 0;
   }
   
-  scaler = document.getElementById("defaultScalingFactor").value;
+  scaleGlobal = document.getElementById("defaultScalingFactor").value;
+  if (localScale.checked == false) {
+    scale = scaleGlobal
+    // localScaleValue.value = scale;
+  }
+  else {
+    scale = localScaleValue.value
+  }
+  scaler = scale
   if (document.getElementById("defaultScalingOperation").value == "divide") {
-    scaler = 1 / scaler;
+    scaler = 1 / scale;
   }
 
   var conversionFactors = {
@@ -118,9 +128,8 @@ function unitConversion(element) {
 function updateAllConversions() {
   var inputElements = document.querySelectorAll('.inputValuePrimary');
 
-  // Iterate over each input element
+  // Call unitConversion () for each input element
   inputElements.forEach(function(inputElement) {
-    // Call unitConversion () for each input element
     unitConversion(inputElement);
   });
 
@@ -147,6 +156,23 @@ function duplicateContainer() {
     
     input.id = input.id.slice(0,-1) + String(numConverters);
   });
+
+  // add special events
+  localScale = duplicate.querySelector(".localScaleValue")
+  localScale.value = scaleGlobal
+  localScale.readOnly = true
+  duplicate.querySelector(".localScale").checked = false
+  localScale.classList.remove("active");
+  duplicate.querySelector('.localScaleLabel').classList.remove("active");
+  duplicate.querySelector(".localScale").addEventListener("click", function() {  
+    toggleLocalScale(this)
+  })
+  duplicate.querySelector(".closeBtn").addEventListener("click", function() {  
+    this.closest(".input-field").remove()
+  })
+
+  // close options details
+  duplicate.querySelector("details").open = false
 
   shiftScrollInput(duplicate);
   shiftScrollSelect(duplicate);
@@ -202,20 +228,6 @@ function updateURLParams() {
   urlParams.set('defaultScalingOperation',  defaultScalingOperation);
 
   history.replaceState(null, '', '?' + urlParams.toString());
-
-  const unitToSystem = {
-    inches: "imperial",
-    feet: "imperial",
-    yards: "imperial",
-    miles: "imperial",
-    millimeters: "metric",
-    centimeters: "metric",
-    meters: "metric",
-    kilometers: "metric",
-    studs: "lego",
-    stackedPlates: "lego",
-    stackedBricks: "lego"
-  };
 }
 
 // Function to parse URL parameters and set initial values
@@ -294,16 +306,18 @@ window.addEventListener('DOMContentLoaded', function() {
   updateAllConversions();
   
   // Add event listeners to trigger conversion whenever input changes
-  document.getElementById("inputValuePrimary1"     ).addEventListener("input", function() { unitConversion(this); });
-  document.getElementById("inputValueSecondary1"   ).addEventListener("input", function() { unitConversion(this); });
-  document.getElementById("inputUnitsPrimary1"     ).addEventListener("input", function() { unitConversion(this); });
-  document.getElementById("inputUnitsSecondary1"   ).addEventListener("input", function() { unitConversion(this); });
-  document.getElementById("outputUnitsPrimary1"    ).addEventListener("input", function() { unitConversion(this); });
-  document.getElementById("outputUnitsSecondary1"  ).addEventListener("input", function() { unitConversion(this); });
-  document.getElementById("defaultDecimialPlaces"  ).addEventListener("input",  updateAllConversions);
-  document.getElementById("defaultDecimialPlaces"  ).addEventListener("input",  calcScale);
-  document.getElementById("defaultScalingFactor"   ).addEventListener("input",  updateAllConversions);
-  document.getElementById("defaultScalingOperation").addEventListener("input",  updateAllConversions);
+  document.getElementById("inputValuePrimary1"      ).addEventListener("input", function() { unitConversion(this); });
+  document.getElementById("inputValueSecondary1"    ).addEventListener("input", function() { unitConversion(this); });
+  document.getElementById("inputUnitsPrimary1"      ).addEventListener("input", function() { unitConversion(this); });
+  document.getElementById("inputUnitsSecondary1"    ).addEventListener("input", function() { unitConversion(this); });
+  document.getElementById("outputUnitsPrimary1"     ).addEventListener("input", function() { unitConversion(this); });
+  document.getElementById("outputUnitsSecondary1"   ).addEventListener("input", function() { unitConversion(this); });
+  document.getElementById("localScale1"             ).addEventListener("input", function() { unitConversion(this); });
+  document.getElementById("localScaleValue1"        ).addEventListener("input", function() { unitConversion(this); });
+  document.getElementById("defaultDecimialPlaces"   ).addEventListener("input",  updateAllConversions);
+  document.getElementById("defaultDecimialPlaces"   ).addEventListener("input",  calcScale);
+  document.getElementById("defaultScalingFactor"    ).addEventListener("input",  updateAllConversions);
+  document.getElementById("defaultScalingOperation" ).addEventListener("input",  updateAllConversions);
       
       
   // Attach event listener to each input
@@ -312,8 +326,6 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
   calcScale();
-  // document.body.classList.add("active-overlayScales");
-  // document.body.classList.add("active-blur");
 });
 
 // toggle sidebar nav
@@ -335,8 +347,6 @@ document.addEventListener('click', function(event) {
   var sidebar = document.getElementById('sideNav');
   var head    = document.getElementById('head');
   body = document.querySelector(".active-blur")
-  // console.log(event.target.contains(document.querySelector(".active-blur")));
-  // console.log(event.target);
 
   // Check if the click is outside the sidebar
   if (!sidebar.contains(event.target) && !head.contains(event.target)) {    
@@ -345,14 +355,15 @@ document.addEventListener('click', function(event) {
   }
 
   // close any overlays
-  if (event.target.contains(body)) { closeOverlays() }});
+  if (event.target.contains(body)) { closeOverlays() }
+});
 
 function closeOverlays() {
-    document.body.classList.remove("active-blur");
-    document.body.classList.remove("active-overlayScaleCalc");
-    document.body.classList.remove("active-overlaySettings");
-    document.body.classList.remove("active-overlayInfo");
-    document.body.classList.remove("active-overlayScales");
+  document.body.classList.remove("active-blur");
+  document.body.classList.remove("active-overlayScaleCalc");
+  document.body.classList.remove("active-overlaySettings");
+  document.body.classList.remove("active-overlayInfo");
+  document.body.classList.remove("active-overlayScales");
   }
 // overlays
 document.querySelector("#openScaleCalc").addEventListener("click", function(){
@@ -414,7 +425,6 @@ document.querySelectorAll(".calcScale").forEach(element => {
 // set scale button
 document.getElementById("applyScaleBtn").addEventListener("click", function() {
   scale = Number(document.getElementById("scaleCalculation").getAttribute("scaleDec"));
-  // console.log(scale);
   
   if(scale > 1) {
     defaultScalingFactor = scale;
@@ -432,13 +442,27 @@ document.getElementById("applyScaleBtn").addEventListener("click", function() {
   updateAllConversions()
 });
 
+// local scale
+document.getElementById("localScale1").addEventListener("click", function() {
+  toggleLocalScale(this)
+})
+function toggleLocalScale(element) {
+  const numberInput = element.parentElement.querySelector('.localScaleValue');
+  const label = element.parentElement.querySelector('.localScaleLabel');
+  
+  
+  if (element.checked) {
+    numberInput.classList.add("active");
+    label.classList.add("active");
+    numberInput.readOnly = false
+  } else {
+    numberInput.classList.remove("active");
+    label.classList.remove("active");
+    numberInput.readOnly = true
+  }
+}
+
 // Event listener for the 'beforeunload' event
 window.addEventListener('beforeunload', function (e) {
-  // Check if any of the input fields are filled
-  // if (fname !== '' || lname !== '' || subject !== '') {
-      // Cancel the event and show alert that
-      // the unsaved changes would be lost
-      e.preventDefault();
-      e.returnValue = '';
-  // }
+  e.preventDefault();
 })
