@@ -11,6 +11,7 @@
   <link rel="icon" type="image/webp" href="favicons/bricks48.webp">
   <link rel="icon" type="image/webp" href="favicons/bricks64.webp">
   <link rel="stylesheet" href="info.html">
+  <meta name="description" content="A resource to help LEGO builders convert and scale between standard and LEGO units to help with designig scale models - a calculator for LEGO.">
 </head>
   <body>
     <!-- Display a message if JavaScript is disabled -->
@@ -74,7 +75,7 @@
                 <!-- num in -->
                 <div id="valueInput">
                   <input type="number" id="unitValueIn" class="unitValueIn calcScale" min="1" value="1" required>
-                  <label class="input-label edge-label" for="unitValueIn"># of Units In</label>
+                  <label class="input-label edge-label" for="unitValueIn">Input</label>
                 </div>
                 <!-- unit in -->
                 <div>
@@ -105,7 +106,7 @@
                 <!-- Converted units1 -->
                 <div id="outputValue">
                   <input class="unitValueOut calcScale" id="unitValueOut" type="number" min="1" value="1" required>
-                  <label class="input-label edge-label" for="unitValueOut"># of Units Out</label>
+                  <label class="input-label edge-label" for="unitValueOut">Output</label>
                 </div>
                 
                 <select class="outputUnitsPrimary calcScale" name="unitsOut" id="unitsOut">
@@ -220,7 +221,7 @@
         <option value="stackedBricks">Stacked Bricks</option>
         <option value="stackedPlates">Stacked Plates</option>
       </select>
-        <label class="edge-label" for="defaultUnitsOutSecondary">Secondary Units Out</label>
+        <label class="edge-label" for="defaultUnitsOutSecondary">Remainder</label>
       </div>
 
        <div class="overlayContainer">
@@ -228,9 +229,24 @@
        </div>
      </div>
 
+    <!-- blur layer -->
+    <div id="blurLayer" class="blur hidden"></div>
     <!-- MARK: Overlay Info -->
     <div class="overlayInfo overlay">
-      <!-- <button class="closeBtn">&times;</button> -->
+      <p>Each conversion box has 2 inputs and 2 outputs.</p>
+      <p>The "Dimension Input" and "2nd Dimension" are added together. This helps if your input is in 2 units, such as feet and inches.</p>
+      <p>The output "Conversion" is the exact conversion of the inputs.</p>
+      <p>The "Remainder" converts the fractional part of the direct conversion to another unit. This allows the output to be 2 units such as stacked bricks and stacked plates. Note that if the output is 1.6 unit A and 2.1 unit B, the total size is 1 unit A + 2.1 unit B, not 1.6 A + 2.1 B.</p>
+      <br>
+      
+      <p>You can change the title of each Conversion box.</p>
+      <p>Under the "Options" for each box, you can change the scale. This ignores the scale set in the header and only effects its box.</p>
+      <br>
+
+      <p>The "Scale Calculator" in the side menu helps you get the scale you want.</p>
+      <p>The default settings of the webite are saved to the URL, so bookmarking the page saves your settings. This saves the decimal places, scaling factor, and operation in the header, and also the input and output units in the "Default Settings" panel in the side menu.</p>
+      <br>
+
       <img src="BrickUnitConverterInfo.webp" alt="Site Features Infographic">
     </div>
 
@@ -359,7 +375,7 @@
             <div class="inlineGrid">
               <div id="outputValue">
                 <input class="outputValueSecondary" type="text" id="outputValueSecondary1" readonly>
-                <label class="input-label edge-label" for="outputValueSecondary1">Secondary Conversion</label>
+                <label class="input-label edge-label" for="outputValueSecondary1">Remainder</label>
               </div>
                 <select class="outputUnitsSecondary" name="outputUnitsSecondary1" id="outputUnitsSecondary1">
                   <option value="studs">Studs</option>

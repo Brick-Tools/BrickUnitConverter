@@ -66,7 +66,7 @@ function unitConversion(element) {
   outputUnit2Select = container.querySelector('.outputUnitsSecondary');
   outputValue2Input = container.querySelector('.outputValueSecondary');
   localScale        = container.querySelector('.localScale');
-  localScaleValue   = container.querySelector('.localScaleValue');
+  localScaleValue   = container.querySelector('.localScaleValue');  
   
   inputUnit1   = inputUnitInput1.value;
   inputUnit2   = inputUnitInput2.value;
@@ -159,7 +159,8 @@ function duplicateContainer() {
 
   // add special events
   localScale = duplicate.querySelector(".localScaleValue")
-  localScale.value = scaleGlobal
+  localScale.value = 1
+  
   localScale.readOnly = true
   duplicate.querySelector(".localScale").checked = false
   localScale.classList.remove("active");
@@ -353,7 +354,7 @@ document.addEventListener('click', function(event) {
     sidebar.style.width = "0px";
     sideNavView = false;
   }
-
+  
   // close any overlays
   if (event.target.contains(body)) { closeOverlays() }
 });
@@ -364,30 +365,35 @@ function closeOverlays() {
   document.body.classList.remove("active-overlaySettings");
   document.body.classList.remove("active-overlayInfo");
   document.body.classList.remove("active-overlayScales");
-  }
+  document.getElementById("blurLayer").classList.add("hidden")
+}
 // overlays
 document.querySelector("#openScaleCalc").addEventListener("click", function(){
   closeOverlays();
   document.body.classList.add("active-overlayScaleCalc");
   document.body.classList.add("active-blur");
+  document.getElementById("blurLayer").classList.remove("hidden")
   toggleNav()
 });
 document.querySelector("#openSettings").addEventListener("click", function(){
   closeOverlays();
   document.body.classList.add("active-overlaySettings");
   document.body.classList.add("active-blur");
+  document.getElementById("blurLayer").classList.remove("hidden")
   toggleNav()
 });
 document.querySelector("#openInfo").addEventListener("click", function(){
   closeOverlays();
   document.body.classList.add("active-overlayInfo");
   document.body.classList.add("active-blur");
+  document.getElementById("blurLayer").classList.remove("hidden")
   toggleNav()
 });
 document.querySelector("#openScales").addEventListener("click", function(){
   closeOverlays();
   document.body.classList.add("active-overlayScales");
   document.body.classList.add("active-blur");
+  document.getElementById("blurLayer").classList.remove("hidden")
   toggleNav()
 });
 

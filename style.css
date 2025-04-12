@@ -1,23 +1,29 @@
 :root {
-  --background-color: black;
-  --button-color: #007bff; /* Define your main color variable */
-  --button-hover-color: #0056b3;
-  --font-color: white;
-  --highlight-font-color: #00FF00;
-  --label-color: gray;
-  --outline-color: #ccc;
-  --dropdown-color: #2C303E;
-  --btn-color: #1E3140;
-  --green-tint: #405a48;
-  --background-color-2: rgb(12, 12, 12);
+  --background-color: 0,0,0;
+  --text-color: white;
+
+  --primary-color: 0,123,255;
+  e: rgb(0,123,255);
+
+  --highlight-color: 0, 255, 0;
+  e: rgb(0, 255, 0);
+
+  --secondary-color: 44, 48, 62;
+  e: rgb(44, 48, 62);
+
+  --outline-color: 128, 128, 128;
+  e: rgb(128, 128, 128);
 }
 
 html {
   height: 100%;
   width: 100%;
-  /* background-color: var(--background-color); */
-  background-color: rgb(12, 12, 12);
-  color: var(--font-color);
+  background-color: rgba(var(--background-color),.95);
+  
+  background-image: url("images/wallpaperDarkA2x.webp");
+  background-size: cover;
+  
+  color: var(--text-color);
   /* text-align: center; */
   text-align: left;
   font-family: 'Roboto Mono', monospace;
@@ -29,7 +35,19 @@ body {
 .inlineGrid {
   display: grid;
   grid-template-columns: minmax(6em, 1fr) minmax(8em, 1.6fr);
-  /* border: 5px solid rebeccapurple; */
+}
+
+.blur {
+  backdrop-filter: blur(.5rem);
+  pointer-events: none;
+  z-index: 2;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.hidden {
+  opacity: 0;
 }
 
 .inline {
@@ -37,12 +55,11 @@ body {
   justify-self: center;
   align-items: center;
   /* justify-content: space-between; */
-  /* border: 1px solid palegoldenrod; */
 }
 .inline > :nth-last-child(1) {
   margin-left: 2em;
   padding-left: 2em;
-  border-left: 1px solid var(--outline-color);
+  border-left: 1px solid rgb(var(--outline-color));
 }
 .inline input[type="checkbox"] {
   margin: 0.5em;
@@ -50,7 +67,7 @@ body {
 .inline label {
   width: 5ch;
   margin-right: 0.5em;
-  color: gray;
+  color: var(--text-color);
 }
 .inline input[type="number"] {
   width: 8ch;
@@ -61,14 +78,14 @@ body {
 .inline input[type="number"].active,
 .localScaleLabel.active {
   /* background-color: gray; */
-  color: var(--font-color);
+  color: var(--text-color);
 }
 .inline input[type="button"] {
   width: 6em;
   height: 3em;
-  color: var(--font-color);
+  color: var(--text-color);
   background-color: rgb(82, 0, 0);
-  border: 1px solid var(--outline-color);
+  border: 1px solid rgb(var(--outline-color));
   border-radius: 4px;
   cursor: pointer;
 }
@@ -89,7 +106,7 @@ summary::after {
   content: '';
   /* width: 0;  */
   /* height: 0;  */
-  border-top: 10px solid var(--font-color);
+  border-top: 10px solid var(--text-color);
   border-inline: 7px solid transparent;
   /* transition: 0.2s; */
 }
@@ -97,9 +114,12 @@ summary::after {
 
 /* Style for header */
 .header {
-  border-bottom: 1px solid var(--outline-color);
-  background-color: var(--background-color);
-  transition: filter 314ms ease-in-out 0ms;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  border-bottom: 1px solid rgb(var(--outline-color));
+  background-color: rgb(var(--background-color));
+  /* transition: filter 314ms ease-in-out 0ms; */
 }
 .headerInputs {
   width: 80%;
@@ -124,8 +144,7 @@ summary::after {
   min-width: 16em;
   max-width: 45em;
   margin: 0px auto;
-  transition: filter 314ms ease-in-out 0ms;
-  /* border: 1px solid red; */
+  /* transition: filter 314ms ease-in-out 0ms; */
 }
 .container {
   position: static;
@@ -135,10 +154,9 @@ summary::after {
   /* flex-flow: row wrap; */
   margin: 32px 0px;
   padding: 0.5em;
-  border: 1px solid var(--outline-color);
-  /* border: 1px solid blue; */
+  border: 1px solid rgb(var(--outline-color));
   border-radius: 8px;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.8);
   align-items: center;
   /* background-color: rgb(16, 16, 16); */
 }
@@ -149,20 +167,11 @@ summary::after {
   flex: 1;
   margin: 2px;
   padding: 0.5em;
-  
-  /* border: 1px solid red; */
 }
 
 
 
 /* MARK: overlay containers */
-.overlay {
-  background-color: black;
-  border: 1px solid var(--outline-color);
-  border-radius: 8px;
-
- /* border: 1px solid red; */
-}
 .overlayContainer {
   position: static;
   display: flex;
@@ -171,25 +180,19 @@ summary::after {
   margin: 32px 0px;
   align-items: center;
   justify-content: center;
-
- /* border: 1px solid green; */
 }
 .overlayContent {
   flex: 1;
   margin: 2px;
   padding: 16px;
-
- /* border: 1px solid blue; */
 }
 
 
 
 /* MARK: Inputs */
 .input-field {
-  flex: 1; /* Allow items to expand equally */
+  flex: 1;
   margin: 4px;
-
-  /* border: 1px solid green; */
 }
 
 /* Style for the label in the header */
@@ -198,8 +201,7 @@ summary::after {
   top: -4px;
   left: 6px;
   font-size: 10px;
-  color: var(--outline-color);
-  background-color: var(--background-color);
+  background-color: rgb(var(--background-color));
   border-radius: 5px;
   padding: 0 5px;
   max-height: 1.2em;
@@ -220,13 +222,13 @@ select,
 input[type="text"] {
   padding: 8px;
   margin-bottom: 10px;
-  border: 1px solid var(--outline-color);
+  border: 1px solid rgb(var(--outline-color));
   border-radius: 4px;
   box-sizing: border-box;
   width: 100%; /* Adjust the width as needed */
   margin: auto;
-  background-color: var(--background-color);
-  color: var(--font-color);
+  background-color: rgb(var(--background-color));
+  color: var(--text-color);
   font-family: 'Roboto Mono', monospace; /* Use Roboto Mono as the font */
 }
 
@@ -236,7 +238,7 @@ input[type="number"] {
 }
 
 input[type="text"] {
-  color: var(--highlight-font-color);
+  color: rgb(var(--highlight-color));
 }
 
 /* Style for input elements on focus */
@@ -244,7 +246,7 @@ input[type="number"]:focus,
 select:focus,
 input[type="text"]:focus {
   outline: none;
-  border-color: var(--highlight-font-color);
+  border-color: rgb(var(--highlight-color));
 }
 
 input.inputValuePrimary,
@@ -253,7 +255,7 @@ input.conversionLabel,
 input.headerInput,
 input.unitValueIn,
 input.unitValueOut {
-  border: 1px solid var(--button-color);
+  border: 1px solid rgb(var(--primary-color));
 }
 
 .content input {
@@ -271,71 +273,69 @@ input.conversionLabel {
   transform: translateX(-50%) translateY(-50%) rotate(-90deg) translateY(-50%) translateY(-8px);
   text-align: center;
   border-radius: 8px;
-  color: var(--outline-color);
+  color: var(--text-color);
 }
 
 /* MARK: Select */
 .content select {
   /* min-width: 128px; */
   /* max-width: 20em; */
-  /* border: 1px solid rebeccapurple; */
 }
 
 /* Style for select dropdown arrow */
 select {
-  background-color: var(--dropdown-color);
+  background-color: rgb(var(--secondary-color));
 }
 
 
 /* MARK: Button */
 button[id="newConverter"] {
-  border: 1px solid var(--button-color);
-  background-color: var(--background-color);
+  border: 1px solid rgb(var(--primary-color));
+  background-color: rgb(0, 0, 0, .9);
   width: 50%;
   max-width: 1000px;
   font-size: 2em;
+  margin-bottom: 4rem;
 }
 
 .btnContainer {
   position: static;
   display: flex;
   justify-content: center;
-  transition: filter 314ms ease-in-out 0ms;
+  /* transition: filter 314ms ease-in-out 0ms; */
 }
 
-/* General button style - '?' btn */
 .duplicateBnt,
 .menuBtn {
   padding: 8px 12px;
   margin: 4px;
   border-radius: 4px;
-  background-color: var(--btn-color);
-  color: var(--font-color);
+  background-color: rgb(var(--secondary-color));
+  color: var(--text-color);
   cursor: pointer;
-  border: 1px solid var(--background-color);
+  border: 1px solid rgb(var(--outline-color));
 }
 
 /* Hover effect */
 .duplicateBnt:hover,
 .menuBtn:hover { 
-  background-color: var(--button-color);
-  border-color: var(--background-color);
+  background-color: rgb(var(--primary-color));
 }
 
 .applyScaleBtn {
-  background-color: var(--background-color);
-  border: 1px solid var(--button-color);
+  background-color: rgb(var(--background-color));
+  border: 1px solid rgb(var(--primary-color));
   border-radius: 4px;
   font-family: inherit;
-  color: var(--font-color);
-  transition: 250ms;
+  color: var(--text-color);
+  /* transition: 250ms; */
 }
 
 .applyScaleBtn:hover {
   cursor: pointer;
-  color: var(--button-color);
+  color: rgb(var(--primary-color));
   font-weight: bolder;
-  transition: 250ms;
+  /* transition: 250ms; */
 }
 
 
@@ -349,7 +349,7 @@ button[id="newConverter"] {
   position: fixed;
   z-index: 10;
   left: 0;
-  background-color: var(--background-color);
+  background-color: rgba(var(--background-color),.8);
   overflow-x: hidden;
   transition: 0.314s;
   padding-top: 20px;
@@ -361,16 +361,18 @@ button[id="newConverter"] {
   padding: 8px 0px;
   text-decoration: none;
   font-size: 20px;
-  color: var(--font-color);
+  color: var(--text-color);
   /* display: block; */
   transition: .314s;
 }
 
-.sideNav li:hover,
-.sideNav a:hover {
-  padding-left: 8px;
-  color: var(--button-color);
+.sideNav li:hover {
+  padding-left: 1rem;
+  color: rgb(var(--primary-color));
   cursor: pointer;
+}
+.sideNav li:hover a {
+  color: rgb(var(--primary-color));
 }
 
 .sideNav span{
@@ -380,14 +382,9 @@ button[id="newConverter"] {
   font-size: 24px;
   margin-left: 50px;
   cursor: pointer;
-  transition: .314s;
+  /* transition: .314s; */
   padding: 0em  2em;
   margin:  0em -2em;
-}
-
-.sideNav span:hover{
-  color: var(--button-color);
-  right: 36px;
 }
 
 /* MARK: overlays */
@@ -401,19 +398,17 @@ button[id="newConverter"] {
   /* min-width: 20em; */
   max-width: 60em;
   padding: 24px;
-  background-color: var(--background-color);
-  border: 1px solid var(--outline-color);
-  border-radius: 10px;
+  background-color: rgb(var(--background-color));
+  border: 1px solid rgb(var(--outline-color));
+  border-radius: 16px;
   box-shadow: 0px 2px 5px 5px rgba(0, 0, 0, 0.1);
   margin-top: -25px;
   opacity: 0;
   transition: top 0ms ease-in-out 314ms, opacity 314ms ease-in-out, margin-top 314ms ease-in-out;
-  
-  /* border-color: red; */
 }
 .overlay h1,
 .overlay p {
-  margin: 0;
+  /* margin: 0; */
 }
 .overlay h1 {
   text-align: center;
@@ -428,63 +423,34 @@ button[id="newConverter"] {
 .overlaySettings p {
   text-align: center;
 }
-/* .overlayScaleCalc {
-  text-align: center;
-} */
 .overlayScaleCalc .overlayContainer {
-  /* border: 1px solid rebeccapurple; */
   margin: 1em auto;
-  max-width: 32em;
-}
-.overlayScaleCalc .overlayContent {
-  /* border: 1px solid rebeccapurple; */
-  /* max-width: 13em; */
-  margin: auto;
-  
-}
-.overlayScaleCalc .inlineGrid {
-  /* border: 1px solid rebeccapurple; */
-  text-align: center;
-  /* max-width: 20em; */
-}
-.overlayScaleCalc h1 {
-  /* border: 1px solid rebeccapurple; */
+  /* max-width: 32em; */
 }
 
 .overlayScaleCalc,
 .overlayInfo,
 .overlaySettings,
 .overlayScales {
-  z-index: 1;
+  z-index: 3;
 }
 
-.overlayInfo .closeBtn {
-  position: absolute;
-  top: -5px;
-  right: 10px;
-  width: 32px;
-  height: 32px;
-  background-color: var(--background-color-2);
-  color: var(--font-color);
-  border: none;
-  outline: none;
-  border-radius: 50%;
-  cursor: pointer;
+.overlayInfo p {
+  padding: 0.25rem;
 }
-
 .overlayInfo img {
   width: 100%;
 }
 
 body.active-overlayInfo {
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 body.active-blur .containerWrapper,
 body.active-blur .btnContainer {
-  filter: blur(5px);
-  /* background-color: rgba(0, 0, 0, 0.08); */;
-  transition: filter 314ms ease-in-out 0ms;
+  /* filter: blur(5px); */
+  /* background-color: rgba(0, 0, 0, 0.08); */
+  /* transition: filter 314ms ease-in-out 0ms; */
   pointer-events: none;
 }
 
@@ -496,7 +462,7 @@ body.active-overlayScales .overlayScales {
   top: 100px;
   opacity: 1;
   margin-top: 0;
-  transition: top 0ms ease-in-out 0ms, opacity 314ms ease-in-out, margin-top 314ms ease-in-out;
+  transition: opacity 314ms ease-in-out, margin-top 314ms ease-in-out;
 }
 
 .overlayScales ul {
